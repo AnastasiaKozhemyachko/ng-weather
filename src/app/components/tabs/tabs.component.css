@@ -1,0 +1,34 @@
+
+.tab-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    position: relative;
+    gap: 5px;
+}
+
+.tab-item {
+    padding: 10px;
+    cursor: pointer;
+    background: #4690d0;
+    color: #e6ecfa;
+}
+
+.tab-item.active {
+    border-bottom: 3px solid #293185;
+}
+
+.tab-item:hover {
+    background-color: #23305e;
+}
+
+.tab-item:not(.active):hover {
+    border-bottom: 3px solid #ccc;
+    padding-bottom: 7px;
+}
+
+.tab-body {
+    border: 2px solid #232b38;
+}
+

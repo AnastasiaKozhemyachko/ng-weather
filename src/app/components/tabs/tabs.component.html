@@ -1,0 +1,22 @@
+
+<div class="tab-container" *ngIf="activeComponent?.content">
+    <div class="tab-header">
+        <div [class.active]="tab === activeComponent" class="tab-item" *ngFor="let tab of tabs">
+            <div (click)="activateTab(tab)">
+                <ng-template
+                        [ngTemplateOutlet]="activeComponent.titleTemplateRef"
+                        [ngTemplateOutletContext]=" {$implicit: activeComponent.content}">
+                </ng-template>
+            </div>
+        </div>
+    </div>
+    <div class="tab-body">
+        <ng-template
+                [ngTemplateOutlet]="activeComponent.bodyTemplateRef"
+                [ngTemplateOutletContext]=" {$implicit: activeComponent.content}">
+        </ng-template>
+    </div>
+</div>
+
+
+
