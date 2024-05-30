@@ -1,10 +1,11 @@
 import {Injectable, Signal, signal} from '@angular/core';
-import {Observable} from 'rxjs';
+import {EMPTY, Observable} from 'rxjs';
 
 import {HttpClient} from '@angular/common/http';
 import {CurrentConditions} from './current-conditions/current-conditions.type';
 import {ConditionsAndZip} from './conditions-and-zip.type';
 import {Forecast} from './forecasts-list/forecast.type';
+import {catchError} from 'rxjs/operators';
 
 @Injectable()
 export class WeatherService {
@@ -39,10 +40,9 @@ export class WeatherService {
   getForecast(zipcode: string): Observable<Forecast> {
     // Here we make a request to get the forecast data from the API. Note the use of backticks and an expression to insert the zipcode
     return this.http.get<Forecast>(`${WeatherService.URL}/forecast/daily?zip=${zipcode},us&units=imperial&cnt=5&APPID=${WeatherService.APPID}`);
-
   }
 
-  getWeatherIcon(id): string {
+  getWeatherIcon(id: number): string {
     if (id >= 200 && id <= 232)
       return WeatherService.ICON_URL + "art_storm.png";
     else if (id >= 501 && id <= 511)
