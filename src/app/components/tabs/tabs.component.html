@@ -1,12 +1,13 @@
 
 <div class="tab-container" *ngIf="activeComponent?.content">
     <div class="tab-header">
-        <div [class.active]="tab === activeComponent" class="tab-item" *ngFor="let tab of tabs">
+        <div [class.active]="tab === activeComponent" class="tab-item" *ngFor="let tab of tabs; let i = index">
             <div (click)="activateTab(tab)">
                 <ng-template
                         [ngTemplateOutlet]="activeComponent.titleTemplateRef"
-                        [ngTemplateOutletContext]=" {$implicit: activeComponent.content}">
+                        [ngTemplateOutletContext]=" {$implicit: tab.content}">
                 </ng-template>
+                <div (click)="close(i)">X</div>
             </div>
         </div>
     </div>

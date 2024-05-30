@@ -1,4 +1,4 @@
-<app-tabs>
+<app-tabs (tabClose)="locationService.removeLocation($event.zip)">
     <ng-container *ngFor="let location of currentConditionsByZip(); let i = index; trackBy: zipCodeTrack">
         <app-tab [titleTemplateRef]="titleTemplateRef"
                  [bodyTemplateRef]="bodyTemplate"
@@ -28,7 +28,6 @@
             </p>
         </div>
         <div>
-            <span class="close" (click)="locationService.removeLocation(location.zip)">&times;</span>
             <img [src]="weatherService.getWeatherIcon(location.data.weather[0].id)">
         </div>
     </div>
