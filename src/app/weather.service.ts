@@ -1,13 +1,10 @@
-import {computed, effect, Inject, Injectable, Signal, signal} from '@angular/core';
-import { Observable} from 'rxjs';
+import {Injectable, Signal, signal} from '@angular/core';
+import {Observable} from 'rxjs';
 
 import {HttpClient} from '@angular/common/http';
 import {CurrentConditions} from './current-conditions/current-conditions.type';
 import {ConditionsAndZip} from './conditions-and-zip.type';
 import {Forecast} from './forecasts-list/forecast.type';
-import {STORAGE_KEY} from './token';
-import {tap} from 'rxjs/operators';
-import {LocationCacheService} from './servises/location-cache.service';
 
 @Injectable()
 export class WeatherService {
@@ -15,36 +12,21 @@ export class WeatherService {
   static URL = 'http://api.openweathermap.org/data/2.5';
   static APPID = '5a4b2d457ecbef9eb2a71e480b947604';
   static ICON_URL = 'https://raw.githubusercontent.com/udacity/Sunshine-Version-2/sunshine_master/app/src/main/res/drawable-hdpi/';
-  private currentConditions = signal<ConditionsAndZip[]>([]);
+  currentConditions = signal<ConditionsAndZip[]>([]);
+  currentCondition = signal<ConditionsAndZip>(null);
 
-  constructor(
-      private http: HttpClient,
-      @Inject(STORAGE_KEY) public location: string,
-      public locationCacheService: LocationCacheService
-  ) {
-    this.currentConditions.set(this.locationCacheService.getDataConditionsAndZip());
-
-    // effect(() => {
-    //   console.log(this.currentConditions());
-    // });
-  }
+  constructor(private http: HttpClient) {}
 
   addCurrentConditions(zipcode: string): void {
-    const data = this.locationCacheService.getNoExpirationItem(zipcode);
-    if (data) {
-      this.updateData(zipcode, data)
-      return;
-    }
-
     // Here we make a request to get the current conditions data from the API. Note the use of backticks and an expression to insert the zipcode
     this.http.get<CurrentConditions>(`${WeatherService.URL}/weather?zip=${zipcode},us&units=imperial&APPID=${WeatherService.APPID}`)
         .subscribe((data) => {
-          this.locationCacheService.addData(data, zipcode)
-          this.updateData(zipcode, data)
+          this.updateData(zipcode, data);
+          this.currentCondition.set({zip: zipcode, data: data})
         });
   }
 
-  private updateData(zipcode: string, data: CurrentConditions) {
+  updateData(zipcode: string, data: CurrentConditions) {
     this.currentConditions.update(conditions => [...(conditions ?? []), {zip: zipcode, data: data}]);
   }
 
@@ -55,7 +37,7 @@ export class WeatherService {
           conditions.splice(+i, 1);
       }
       return conditions;
-    })
+    });
   }
 
   getCurrentConditions(): Signal<ConditionsAndZip[]> {

@@ -1,7 +1,8 @@
-import {AfterContentInit, Component, ContentChildren, EventEmitter, OnDestroy, OnInit, Output, QueryList} from '@angular/core';
+import {AfterContentInit, Component, ContentChildren, EventEmitter, OnDestroy, Output, QueryList} from '@angular/core';
 import {TabComponent} from '../tab/tab.component';
 import {NgForOf, NgIf, NgTemplateOutlet} from '@angular/common';
 import {Subject} from 'rxjs';
+import {filter, takeUntil} from 'rxjs/operators';
 
 @Component({
   selector: 'app-tabs',
@@ -24,6 +25,12 @@ export class TabsComponent<TContent> implements AfterContentInit, OnDestroy {
 
   ngAfterContentInit() {
     this.activeComponent = this.tabs.first;
+    this.tabs.changes.pipe(
+        takeUntil(this.destroy),
+        filter(() => this.tabs.length > 0)
+    ).subscribe(() => {
+      this.activeComponent = this.tabs.first;
+    });
   }
 
   ngOnDestroy(): void {
@@ -34,12 +41,13 @@ export class TabsComponent<TContent> implements AfterContentInit, OnDestroy {
     this.activeComponent = tab;
   }
 
-  close(index: number) {
-    const array = this.tabs.toArray()
+  close(tab: TabComponent<TContent>, index: number) {
+    this.tabClose.emit(tab.content);
+
+    const array = this.tabs.toArray();
     array.splice(index, 1);
     this.tabs.reset(array);
-    this.activeComponent = this.tabs.first;
-    this.tabClose.emit(this.activeComponent?.content);
+    this.activeComponent = this.tabs.first; //TODO: if active tab disappear set first
   }
 
   private unsubscribe() {
