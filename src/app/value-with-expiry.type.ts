@@ -1,5 +1,5 @@
 export interface ValueWithExpiry<Item> {
-    expiry?: number;
+    expiration?: number;
     value?: Item;
     key?: string | number;
 }

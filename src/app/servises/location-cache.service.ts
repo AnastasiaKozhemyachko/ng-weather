@@ -5,10 +5,11 @@ import {ConditionsAndZip} from '../conditions-and-zip.type';
 
 @Injectable()
 export class LocationCacheService extends CacheService<CurrentConditions>{
-    public seconds = 7200
+    public seconds = 7200 * 1000; //2hour
+    // public seconds = 7;
 
     getDataConditionsAndZip(): ConditionsAndZip[] {
-        return this.getData()?.map(value => this.transform(value))
+        return this.getData().map(value => this.transform(value))
     }
 
     private transform(value: any): any {

@@ -1,4 +1,4 @@
-import {Inject, Injectable, Signal, signal} from '@angular/core';
+import {computed, effect, Inject, Injectable, Signal, signal} from '@angular/core';
 import { Observable} from 'rxjs';
 
 import {HttpClient} from '@angular/common/http';
@@ -23,12 +23,16 @@ export class WeatherService {
       public locationCacheService: LocationCacheService
   ) {
     this.currentConditions.set(this.locationCacheService.getDataConditionsAndZip());
+
+    // effect(() => {
+    //   console.log(this.currentConditions());
+    // });
   }
 
   addCurrentConditions(zipcode: string): void {
-    const data = this.locationCacheService.getItemData(zipcode);
+    const data = this.locationCacheService.getNoExpirationItem(zipcode);
     if (data) {
-    //   this.updateData(zipcode, data)
+      this.updateData(zipcode, data)
       return;
     }
 

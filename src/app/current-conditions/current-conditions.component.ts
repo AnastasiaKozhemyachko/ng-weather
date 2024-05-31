@@ -1,10 +1,11 @@
-import {Component, effect, inject, OnInit, Signal, untracked} from '@angular/core';
+import {Component, computed, effect, inject, OnInit, Signal, untracked} from '@angular/core';
 import {WeatherService} from "../weather.service";
 import {LocationService} from "../location.service";
 import {Router} from "@angular/router";
 import {ConditionsAndZip} from '../conditions-and-zip.type';
 import {zip} from 'rxjs';
-import {toObservable} from '@angular/core/rxjs-interop';
+import {toObservable, toSignal} from '@angular/core/rxjs-interop';
+import {switchMap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-current-conditions',
@@ -23,7 +24,7 @@ export class CurrentConditionsComponent {
       if (zipcode) {
         this.weatherService.addCurrentConditions(zipcode);
       }
-    });
+    }, { allowSignalWrites: true });
   }
 
   showForecast(zipcode : string){
