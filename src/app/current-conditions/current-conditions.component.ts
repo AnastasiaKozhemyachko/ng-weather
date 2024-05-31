@@ -1,13 +1,15 @@
-import {Component, effect, inject, Signal} from '@angular/core';
+import {Component, effect, inject, OnInit, Signal, untracked} from '@angular/core';
 import {WeatherService} from "../weather.service";
 import {LocationService} from "../location.service";
 import {Router} from "@angular/router";
 import {ConditionsAndZip} from '../conditions-and-zip.type';
+import {zip} from 'rxjs';
+import {toObservable} from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-current-conditions',
   templateUrl: './current-conditions.component.html',
-  styleUrls: ['./current-conditions.component.css']
+  styleUrls: ['./current-conditions.component.css'],
 })
 export class CurrentConditionsComponent {
   weatherService = inject(WeatherService);
@@ -17,8 +19,9 @@ export class CurrentConditionsComponent {
 
   constructor() {
     effect(() => {
-      for (let loc of this.locationService.locations()) {
-        this.weatherService.addCurrentConditions(loc);
+      const zipcode = this.locationService.newLocation();
+      if (zipcode) {
+        this.weatherService.addCurrentConditions(zipcode);
       }
     });
   }
@@ -31,4 +34,7 @@ export class CurrentConditionsComponent {
     return item.zip;
   }
 
+  removeLocation(zip: string) {
+    this.weatherService.removeCurrentConditions(zip);
+  }
 }

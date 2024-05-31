@@ -1,4 +1,4 @@
-<app-tabs (tabClose)="locationService.removeLocation($event.zip)">
+<app-tabs *ngIf="currentConditionsByZip()" (tabClose)="removeLocation($event.zip)">
     <ng-container *ngFor="let location of currentConditionsByZip(); let i = index; trackBy: zipCodeTrack">
         <app-tab [titleTemplateRef]="titleTemplateRef"
                  [bodyTemplateRef]="bodyTemplate"
@@ -12,7 +12,7 @@
 </ng-template>
 
 <ng-template #bodyTemplate let-location>
-    <div *ngIf="location" class="weather-container">
+    <div *ngIf="location" class="weather-container" (click)="showForecast(location.zip)">
         <div>
             <h3>{{location.data.name}} ({{location.zip}})</h3>
 

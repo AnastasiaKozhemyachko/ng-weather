@@ -8,8 +8,7 @@ import {Component, Input, TemplateRef} from '@angular/core';
   styleUrl: './tab.component.css'
 })
 export class TabComponent<TContent> {
-  @Input() tabName? = 'default';
-  @Input() titleTemplateRef!: TemplateRef<any>;
-  @Input() bodyTemplateRef!: TemplateRef<any>;
+  @Input() titleTemplateRef!: TemplateRef<TContent>;
+  @Input() bodyTemplateRef!: TemplateRef<TContent>;
   @Input() content?: TContent;
 }

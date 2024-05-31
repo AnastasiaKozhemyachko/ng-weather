@@ -9,6 +9,7 @@
 }
 
 .tab-item {
+    display: flex;
     padding: 10px;
     cursor: pointer;
     background: #4690d0;
@@ -30,5 +31,15 @@
 
 .tab-body {
     border: 2px solid #232b38;
+}
+
+.tab-close {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #1256cd;
+    border-radius: 15px;
+    height: 25px;
+    width: 25px;
 }
 

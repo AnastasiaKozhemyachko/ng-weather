@@ -1,11 +1,13 @@
-import {Injectable, Signal, signal} from '@angular/core';
-import {EMPTY, Observable} from 'rxjs';
+import {Inject, Injectable, Signal, signal} from '@angular/core';
+import { Observable} from 'rxjs';
 
 import {HttpClient} from '@angular/common/http';
 import {CurrentConditions} from './current-conditions/current-conditions.type';
 import {ConditionsAndZip} from './conditions-and-zip.type';
 import {Forecast} from './forecasts-list/forecast.type';
-import {catchError} from 'rxjs/operators';
+import {STORAGE_KEY} from './token';
+import {tap} from 'rxjs/operators';
+import {LocationCacheService} from './servises/location-cache.service';
 
 @Injectable()
 export class WeatherService {
@@ -15,12 +17,31 @@ export class WeatherService {
   static ICON_URL = 'https://raw.githubusercontent.com/udacity/Sunshine-Version-2/sunshine_master/app/src/main/res/drawable-hdpi/';
   private currentConditions = signal<ConditionsAndZip[]>([]);
 
-  constructor(private http: HttpClient) { }
+  constructor(
+      private http: HttpClient,
+      @Inject(STORAGE_KEY) public location: string,
+      public locationCacheService: LocationCacheService
+  ) {
+    this.currentConditions.set(this.locationCacheService.getDataConditionsAndZip());
+  }
 
   addCurrentConditions(zipcode: string): void {
+    const data = this.locationCacheService.getItemData(zipcode);
+    if (data) {
+    //   this.updateData(zipcode, data)
+      return;
+    }
+
     // Here we make a request to get the current conditions data from the API. Note the use of backticks and an expression to insert the zipcode
     this.http.get<CurrentConditions>(`${WeatherService.URL}/weather?zip=${zipcode},us&units=imperial&APPID=${WeatherService.APPID}`)
-      .subscribe(data => this.currentConditions.update(conditions => [...conditions, {zip: zipcode, data}]));
+        .subscribe((data) => {
+          this.locationCacheService.addData(data, zipcode)
+          this.updateData(zipcode, data)
+        });
+  }
+
+  private updateData(zipcode: string, data: CurrentConditions) {
+    this.currentConditions.update(conditions => [...(conditions ?? []), {zip: zipcode, data: data}]);
   }
 
   removeCurrentConditions(zipcode: string) {

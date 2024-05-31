@@ -16,8 +16,12 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import {TabComponent} from './components/tab/tab.component';
 import {TabsComponent} from './components/tabs/tabs.component';
+import {STORAGE_KEY} from './token';
+import {LocationCacheService} from './servises/location-cache.service';
 
+// @ts-ignore
 @NgModule({
+  bootstrap: [AppComponent],
   declarations: [
     AppComponent,
     ZipcodeEntryComponent,
@@ -35,7 +39,6 @@ import {TabsComponent} from './components/tabs/tabs.component';
     TabComponent,
     TabsComponent,
   ],
-  providers: [LocationService, WeatherService],
-  bootstrap: [AppComponent]
+  providers: [LocationService, WeatherService, LocationCacheService, {provide: STORAGE_KEY, useValue: 'LOCATIONS'}]
 })
 export class AppModule { }
