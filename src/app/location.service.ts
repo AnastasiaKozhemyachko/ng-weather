@@ -2,9 +2,16 @@ import {Injectable, signal} from '@angular/core';
 
 @Injectable()
 export class LocationService {
-  newLocation = signal<string>(null);
+  locations = signal<string[] >([]);
 
   addLocation(zipcode : string) {
-    this.newLocation.set(zipcode)
+    if (this.locations().includes(zipcode)) {
+      return;
+    }
+    this.locations.update(value => [...value, zipcode]);
+  }
+
+  removeLocation(zipcode : string) {
+    this.locations.update(value => value.filter(item => item !== zipcode))
   }
 }

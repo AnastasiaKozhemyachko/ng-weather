@@ -9,7 +9,6 @@ import {Forecast} from './forecast.type';
   styleUrls: ['./forecasts-list.component.css']
 })
 export class ForecastsListComponent {
-
   zipcode: string;
   forecast: Forecast;
 

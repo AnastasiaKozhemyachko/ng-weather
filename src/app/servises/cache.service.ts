@@ -13,13 +13,19 @@ export abstract class CacheService<TItem> {
   }
 
   setData(data: TItem[]) {
-    const transformLocalStorage = data.map((value)=> this.transformLocalStorage(value, 1))
+    const transformLocalStorage = data.map((value)=> this.transformLocalStorage(value, this.storageKey))
     localStorage.setItem(this.storageKey, JSON.stringify(transformLocalStorage));
   }
 
   addData(data: TItem, key: string | number) {
-    const currentValue = JSON.parse(localStorage.getItem(this.storageKey)) || [];
-    localStorage.setItem(this.storageKey, JSON.stringify([...currentValue, this.transformLocalStorage(data, key)]));
+    let currentValue = JSON.parse(localStorage.getItem(this.storageKey)) || [];
+    const index = currentValue.findIndex(item => item.key === key);
+    if (index !== -1) {
+      currentValue[index] = this.transformLocalStorage(data, key);
+    } else {
+      currentValue = [...currentValue, this.transformLocalStorage(data, key)];
+    }
+    localStorage.setItem(this.storageKey, JSON.stringify(currentValue));
   }
 
   getData(): ValueWithExpiry<TItem>[] {

@@ -1,9 +1,12 @@
-import {Component, effect, inject, Signal} from '@angular/core';
+import {Component, inject, Signal} from '@angular/core';
 import {WeatherService} from "../weather.service";
 import {LocationService} from "../location.service";
 import {Router} from "@angular/router";
 import {ConditionsAndZip} from '../conditions-and-zip.type';
 import {LocationCacheService} from '../servises/location-cache.service';
+import {toObservable, toSignal} from '@angular/core/rxjs-interop';
+import {map, mergeMap, switchMap, tap} from 'rxjs/operators';
+import {defer, forkJoin, Observable, of} from 'rxjs';
 
 @Component({
   selector: 'app-current-conditions',
@@ -15,18 +18,26 @@ export class CurrentConditionsComponent {
   private router = inject(Router);
   protected locationService = inject(LocationService);
   protected locationCacheService = inject(LocationCacheService);
-  protected currentConditionsByZip: Signal<ConditionsAndZip[]> = this.weatherService.getCurrentConditions();
 
-  cacheEffect = effect(() => {
-    const value = this.weatherService.currentCondition();
-    if (value) {
-      this.locationCacheService.addData(value.data, value.zip);
-    }
-  });
+  conditions: Signal<ConditionsAndZip[]>= toSignal(
+      toObservable(this.locationService.locations).pipe(
+          mergeMap((locations) => forkJoin(locations.map(zip => this.getData(zip)))),
+      )
+  );
 
-  doRequestEffect = effect(() => {
-    this.doRequest();
-  }, { allowSignalWrites: true });
+  getData(zip: string): Observable<ConditionsAndZip> {
+    return of(zip).pipe(switchMap(value => defer(() => this.getDataFromStorageOrRequest(value))))
+  }
+
+  private getDataFromStorageOrRequest(zip: string) {
+    const data = this.locationCacheService.getNoExpirationItem(zip);
+
+    return data
+        ? of({zip, data})
+        : this.weatherService.addCurrentConditionsObserable(zip).pipe(
+            map(condition => ({zip: zip, data: condition})),
+            tap((value) => this.locationCacheService.addData(value.data, value.zip)));
+  }
 
   showForecast(zipcode : string){
     this.router.navigate(['/forecast', zipcode])
@@ -34,23 +45,5 @@ export class CurrentConditionsComponent {
 
   zipCodeTrack(index: number, item: ConditionsAndZip){
     return item.zip;
-  }
-
-  removeLocation(zip: string) {
-    this.weatherService.removeCurrentConditions(zip);
-  }
-
-  private doRequest() {
-    const zipcode = this.locationService.newLocation();
-    if (!zipcode) {
-      return;
-    }
-
-    const data = this.locationCacheService.getNoExpirationItem(zipcode);
-    if (data) {
-      this.weatherService.updateData(zipcode, data);
-    } else {
-      this.weatherService.addCurrentConditions(zipcode);
-    }
   }
 }
