@@ -1,14 +1,14 @@
 import {Inject, Injectable} from '@angular/core';
-import {STORAGE_KEY} from '../token';
 import {ValueWithExpiry} from '../value-with-expiry.type';
 
 @Injectable({
   providedIn: 'root',
 })
 export abstract class CacheService<TItem> {
-  abstract seconds: number;
+  protected abstract seconds: number;
+  protected abstract storageKey: string;
 
-  constructor(@Inject(STORAGE_KEY) public storageKey: string) {
+  constructor() {
     this.deleteExpiriedDate()
   }
 

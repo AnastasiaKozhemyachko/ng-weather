@@ -1,4 +1,4 @@
-import {Component, inject, Signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject, Signal} from '@angular/core';
 import {WeatherService} from "../weather.service";
 import {LocationService} from "../location.service";
 import {Router} from "@angular/router";
@@ -12,13 +12,15 @@ import {defer, forkJoin, Observable, of} from 'rxjs';
   selector: 'app-current-conditions',
   templateUrl: './current-conditions.component.html',
   styleUrls: ['./current-conditions.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CurrentConditionsComponent {
   weatherService = inject(WeatherService);
   private router = inject(Router);
   protected locationService = inject(LocationService);
-  protected locationCacheService = inject(LocationCacheService);
+  protected cacheService = inject(LocationCacheService);
 
+  //The signal reacts if a new location has been added
   conditions: Signal<ConditionsAndZip[]>= toSignal(
       toObservable(this.locationService.locations).pipe(
           mergeMap((locations) => forkJoin(locations.map(zip => this.getData(zip)))),
@@ -29,14 +31,15 @@ export class CurrentConditionsComponent {
     return of(zip).pipe(switchMap(value => defer(() => this.getDataFromStorageOrRequest(value))))
   }
 
-  private getDataFromStorageOrRequest(zip: string) {
-    const data = this.locationCacheService.getNoExpirationItem(zip);
+  //get the data from the local storage or makes a request if they are not relevant
+  private getDataFromStorageOrRequest(zip: string): Observable<ConditionsAndZip> {
+    const data = this.cacheService.getNoExpirationItem(zip);
 
     return data
         ? of({zip, data})
         : this.weatherService.addCurrentConditionsObserable(zip).pipe(
             map(condition => ({zip: zip, data: condition})),
-            tap((value) => this.locationCacheService.addData(value.data, value.zip)));
+            tap((value) => this.cacheService.addData(value.data, value.zip)));
   }
 
   showForecast(zipcode : string){
