@@ -1,4 +1,4 @@
-<div class="tab-container" *ngIf="activeComponent?.content">
+<div class="tab-container" *ngIf="activeComponent">
     <div class="tab-header">
         <div  *ngFor="let tab of tabs; let i = index"
               (click)="activateTab(tab)"

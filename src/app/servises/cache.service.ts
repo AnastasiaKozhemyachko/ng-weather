@@ -9,11 +9,11 @@ export abstract class CacheService<TItem> {
   protected abstract storageKey: string;
 
   constructor() {
-    this.deleteExpiriedDate()
+    this.deleteExpiriedDate();
   }
 
   setData(data: TItem[]) {
-    const transformLocalStorage = data.map((value)=> this.transformLocalStorage(value, this.storageKey))
+    const transformLocalStorage = data.map((value)=> this.transformLocalStorage(value, this.storageKey));
     localStorage.setItem(this.storageKey, JSON.stringify(transformLocalStorage));
   }
 
@@ -33,7 +33,7 @@ export abstract class CacheService<TItem> {
   }
 
   getItemValue(key: string): TItem {
-    return this.getData()?.find((expiration) => expiration.key === key)?.value;
+    return this.getData()?.find((value) => value.key === key)?.value;
   }
 
   getNoExpirationItem(key: string): TItem {

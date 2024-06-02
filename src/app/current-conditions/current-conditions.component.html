@@ -1,5 +1,5 @@
-<app-tabs *ngIf="conditions()" (tabClose)="locationService.removeLocation($event.zip)">
-    <ng-container *ngFor="let location of conditions(); let i = index; trackBy: zipCodeTrack">
+<app-tabs (tabClose)="locationService.removeLocation($event.zip)">
+    <ng-container *ngFor="let location of conditions$ | async; let i = index; trackBy: zipTrack">
         <app-tab [titleTemplateRef]="titleTemplateRef"
                  [bodyTemplateRef]="bodyTemplate"
                  [content]="location"
