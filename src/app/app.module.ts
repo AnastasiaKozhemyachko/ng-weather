@@ -17,6 +17,7 @@ import { environment } from '../environments/environment';
 import {TabComponent} from './components/tab/tab.component';
 import {TabsComponent} from './components/tabs/tabs.component';
 import {LocationCacheService} from './servises/location-cache.service';
+import {ForecastCacheService} from './servises/forecast-cache.service';
 
 // @ts-ignore
 @NgModule({
@@ -38,6 +39,6 @@ import {LocationCacheService} from './servises/location-cache.service';
     TabComponent,
     TabsComponent,
   ],
-  providers: [LocationService, WeatherService, LocationCacheService]
+  providers: [LocationService, WeatherService, LocationCacheService, ForecastCacheService]
 })
 export class AppModule { }

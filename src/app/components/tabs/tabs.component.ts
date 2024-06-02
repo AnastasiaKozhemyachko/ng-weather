@@ -35,7 +35,6 @@ export class TabsComponent<TContent> implements AfterContentInit, OnDestroy {
   destroy$ = new Subject();
 
   ngAfterContentInit() {
-    this.activateTab(this.tabs.first);
     // respond to changes in the tabs
     this.tabs.changes.pipe(takeUntil(this.destroy$), filter(() => this.tabs.length > 0)).subscribe(() => {
       if (!this.activeComponent) {

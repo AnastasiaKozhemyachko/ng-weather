@@ -1,8 +1,7 @@
 <div>
-  <div class="panel panel-default">
+  <div class="panel panel-default" *ngIf="forecast$ | async as forecast">
     <div class="panel-heading">
       <h3 class="panel-title">5-day forecast for {{forecast?.city.name}}</h3>
-
     </div>
     <ul class="list-group">
       <li *ngFor="let dailyForecast of forecast?.list" class="list-group-item">

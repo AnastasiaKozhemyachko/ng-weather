@@ -1,5 +1,7 @@
-import {Inject, Injectable} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {ValueWithExpiry} from '../value-with-expiry.type';
+import {Observable, of} from 'rxjs';
+import {tap} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -42,6 +44,15 @@ export abstract class CacheService<TItem> {
 
   private validDate(expiration: number): boolean {
     return expiration > new Date().getTime();
+  }
+
+  getDataOrDoRequest(request: Observable<TItem>, zipcode): Observable<TItem> {
+    const validData = this.getNoExpirationItem(zipcode)
+    if (validData) {
+      return of(validData)
+    }
+    // Here we make a request to get the current conditions data from the API. Note the use of backticks and an expression to insert the zipcode
+    return request.pipe(tap((value) => this.addData(value, zipcode)));
   }
 
   private transformLocalStorage(value:TItem, key: string | number): ValueWithExpiry<TItem> {

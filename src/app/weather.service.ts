@@ -1,26 +1,29 @@
-import {Injectable, Signal, signal} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 
 import {HttpClient} from '@angular/common/http';
 import {CurrentConditions} from './current-conditions/current-conditions.type';
 import {Forecast} from './forecasts-list/forecast.type';
+import {ForecastCacheService} from './servises/forecast-cache.service';
+import {LocationCacheService} from './servises/location-cache.service';
 
 @Injectable()
 export class WeatherService {
-  static URL = 'http://api.openweathermap.org/data/2.5';
-  static APPID = '5a4b2d457ecbef9eb2a71e480b947604';
-  static ICON_URL = 'https://raw.githubusercontent.com/udacity/Sunshine-Version-2/sunshine_master/app/src/main/res/drawable-hdpi/';
+  private static readonly URL = 'http://api.openweathermap.org/data/2.5';
+  private static readonly APPID = '5a4b2d457ecbef9eb2a71e480b947604';
+  private static readonly ICON_URL = 'https://raw.githubusercontent.com/udacity/Sunshine-Version-2/sunshine_master/app/src/main/res/drawable-hdpi/';
+  protected locationService = inject(LocationCacheService);
+  protected forecastService = inject(ForecastCacheService);
+  protected http = inject(HttpClient);
 
-  constructor(private http: HttpClient) {}
-
-  addCurrentConditionsObserable(zipcode: string):Observable<CurrentConditions> {
+  addCurrentConditionsObservable(zipcode: string):Observable<CurrentConditions> {
     // Here we make a request to get the current conditions data from the API. Note the use of backticks and an expression to insert the zipcode
-    return this.http.get<CurrentConditions>(`${WeatherService.URL}/weather?zip=${zipcode},us&units=imperial&APPID=${WeatherService.APPID}`);
+    return this.locationService.getDataOrDoRequest(this.http.get<CurrentConditions>(`${WeatherService.URL}/weather?zip=${zipcode},us&units=imperial&APPID=${WeatherService.APPID}`), zipcode);
   }
 
   getForecast(zipcode: string): Observable<Forecast> {
     // Here we make a request to get the forecast data from the API. Note the use of backticks and an expression to insert the zipcode
-    return this.http.get<Forecast>(`${WeatherService.URL}/forecast/daily?zip=${zipcode},us&units=imperial&cnt=5&APPID=${WeatherService.APPID}`);
+    return this.forecastService.getDataOrDoRequest(this.http.get<Forecast>(`${WeatherService.URL}/forecast/daily?zip=${zipcode},us&units=imperial&cnt=5&APPID=${WeatherService.APPID}`), zipcode);
   }
 
   getWeatherIcon(id: number): string {
@@ -39,5 +42,4 @@ export class WeatherService {
     else
       return WeatherService.ICON_URL + "art_clear.png";
   }
-
 }

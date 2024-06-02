@@ -1,7 +1,9 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {WeatherService} from '../weather.service';
 import {ActivatedRoute} from '@angular/router';
 import {Forecast} from './forecast.type';
+import {switchMap} from 'rxjs/operators';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-forecasts-list',
@@ -10,19 +12,9 @@ import {Forecast} from './forecast.type';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ForecastsListComponent {
-  protected cdf = inject(ChangeDetectorRef);
-
-  zipcode: string;
-  forecast: Forecast;
+  forecast$: Observable<Forecast>;
 
   constructor(protected weatherService: WeatherService, route : ActivatedRoute) {
-    route.params.subscribe(params => {
-      this.zipcode = params['zipcode'];
-      weatherService.getForecast(this.zipcode)
-        .subscribe(data => {
-          this.forecast = data;
-          this.cdf.markForCheck();
-        });
-    });
+    this.forecast$ = route.params.pipe(switchMap(params => weatherService.getForecast(params['zipcode'])));
   }
 }

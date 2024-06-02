@@ -1,12 +1,12 @@
-import {ChangeDetectionStrategy, Component, computed, inject, Signal, signal} from '@angular/core';
-import {WeatherService} from "../weather.service";
-import {LocationService} from "../location.service";
-import {Router} from "@angular/router";
+import {ChangeDetectionStrategy, Component, inject, Signal} from '@angular/core';
+import {WeatherService} from '../weather.service';
+import {LocationService} from '../location.service';
+import {Router} from '@angular/router';
 import {ConditionsAndZip} from '../conditions-and-zip.type';
 import {LocationCacheService} from '../servises/location-cache.service';
 import {toObservable, toSignal} from '@angular/core/rxjs-interop';
-import {filter, map, mergeMap, tap} from 'rxjs/operators';
-import {Observable, of} from 'rxjs';
+import {filter, map, mergeMap} from 'rxjs/operators';
+import {forkJoin, Observable, of} from 'rxjs';
 import {CurrentConditions} from './current-conditions.type';
 
 @Component({
@@ -22,11 +22,13 @@ export class CurrentConditionsComponent {
   protected cacheService = inject(LocationCacheService);
 
   // reacts to new locations
-  conditions$: Observable<ConditionsAndZip[]> = toObservable(this.locationService.newlocation).pipe(
-      filter(zip => !!zip),
-      mergeMap((zip) => this.fetchDataFromStorageOrRequest(zip)),
-      map(() => this.transform())
-  );
+  conditions$: Signal<ConditionsAndZip[]> = toSignal(toObservable(this.locationService.locations).pipe(
+      filter((zip) => !!zip.length),
+      mergeMap(zipCodes => {
+        const requests = this.fetchData(zipCodes);
+        return requests.length ? forkJoin(requests) : of([]);
+      })
+  ));
 
   zipTrack = (index: number, item: ConditionsAndZip) => item.zip;
 
@@ -35,17 +37,12 @@ export class CurrentConditionsComponent {
   }
 
   // Fetch data from cache or request it if not available
-  private fetchDataFromStorageOrRequest(zip: string): Observable<CurrentConditions> {
-    const cache = this.cacheService.getNoExpirationItem(zip);
-    return cache
-        ? of(cache)
-        : this.weatherService.addCurrentConditionsObserable(zip).pipe(tap((condition: CurrentConditions) => this.cacheService.addData(condition, zip)));
-  }
-
-  private transform(): ConditionsAndZip[] {
-    return this.locationService.locations().map(zip => ({
-      zip,
-      data: this.cacheService.getItemValue(zip)
-    }));
+  private fetchData(zipCodes: string[]): Observable<ConditionsAndZip>[] {
+    return zipCodes.map(zipCode => {
+      const cache = this.cacheService.getNoExpirationItem(zipCode);
+      return cache
+          ? of({zip: zipCode, data: cache})
+          : this.weatherService.addCurrentConditionsObservable(zipCode).pipe(map((condition: CurrentConditions) => ({zip: zipCode, data: condition})));
+    });
   }
 }
