@@ -22,13 +22,13 @@ export class CurrentConditionsComponent {
   protected cacheService = inject(LocationCacheService);
 
   // reacts to new locations
-  conditions$: Signal<ConditionsAndZip[]> = toSignal(toObservable(this.locationService.locations).pipe(
+  conditions$: Observable<ConditionsAndZip[]> = toObservable(this.locationService.locations).pipe(
       filter((zip) => !!zip.length),
       mergeMap(zipCodes => {
         const requests = this.fetchData(zipCodes);
         return requests.length ? forkJoin(requests) : of([]);
       })
-  ));
+  );
 
   zipTrack = (index: number, item: ConditionsAndZip) => item.zip;
 
