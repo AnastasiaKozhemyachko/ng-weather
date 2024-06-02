@@ -30,7 +30,7 @@
     "web-push": "^3.3.5",
     "zone.js": "~0.14.2"
   },
-  "devDependencies": {
+  "devDependenies": {
     "@angular-devkit/build-angular": "^17.0.6",
     "@angular/cli": "^17.0.6",
     "@angular/compiler-cli": "^17.0.6",
