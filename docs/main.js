@@ -297,11 +297,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _weather_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../weather.service */ 3715);
 /* harmony import */ var _location_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../location.service */ 3026);
 /* harmony import */ var _angular_core_rxjs_interop__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/core/rxjs-interop */ 9074);
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs/operators */ 8627);
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! rxjs/operators */ 1963);
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! rxjs/operators */ 5443);
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! rxjs */ 8757);
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! rxjs */ 1536);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs/operators */ 1963);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! rxjs/operators */ 5443);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! rxjs */ 8757);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! rxjs */ 1536);
 var __decorate = undefined && undefined.__decorate || function (decorators, target, key, desc) {
   var c = arguments.length,
     r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
@@ -322,21 +321,29 @@ let CurrentConditionsComponent = class CurrentConditionsComponent {
     this.weatherService = (0,_angular_core__WEBPACK_IMPORTED_MODULE_4__.inject)(_weather_service__WEBPACK_IMPORTED_MODULE_2__.WeatherService);
     this.locationService = (0,_angular_core__WEBPACK_IMPORTED_MODULE_4__.inject)(_location_service__WEBPACK_IMPORTED_MODULE_3__.LocationService);
     // Observable that updates when the location changes and returns an array of conditions and zip codes
-    this.conditions$ = (0,_angular_core_rxjs_interop__WEBPACK_IMPORTED_MODULE_5__.toObservable)(this.locationService.locations).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_6__.filter)(zip => !!zip.length), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_7__.switchMap)(zipCodes => this.fetchData(zipCodes)), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_8__.map)(conditions => conditions.filter(condition => condition.data)));
+    this.conditions$ = (0,_angular_core_rxjs_interop__WEBPACK_IMPORTED_MODULE_5__.toObservable)(this.locationService.locations).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_6__.switchMap)(zipCodes => this.fetchData(zipCodes)), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_7__.map)(conditions => this.removeInvalidConditions(conditions)));
     this.zipTrack = (index, item) => item.zip;
     // Fetch data for the given zip codes
     this.fetchData = zipCodes => {
       const requests = this.mapRequests(zipCodes);
-      return requests.length ? (0,rxjs__WEBPACK_IMPORTED_MODULE_9__.forkJoin)(requests) : (0,rxjs__WEBPACK_IMPORTED_MODULE_10__.of)([]);
+      return requests.length ? (0,rxjs__WEBPACK_IMPORTED_MODULE_8__.forkJoin)(requests) : (0,rxjs__WEBPACK_IMPORTED_MODULE_9__.of)([]);
     };
   }
   // Map each zip code to an observable that fetches current conditions and pairs it with the zip code
   mapRequests(zipCodes) {
     return zipCodes.map(zipCode => {
-      return this.weatherService.addCurrentConditionsObservable(zipCode).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_8__.map)(condition => ({
+      return this.weatherService.addCurrentConditionsObservable(zipCode).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_7__.map)(condition => ({
         zip: zipCode,
         data: condition
       })));
+    });
+  }
+  removeInvalidConditions(conditions) {
+    return conditions.filter(condition => {
+      if (!condition.data) {
+        this.locationService.removeLocation(condition.zip);
+      }
+      return !!condition.data;
     });
   }
 };
@@ -618,8 +625,8 @@ let LocationCacheService = class LocationCacheService extends _cache_service__WE
   constructor() {
     super(...arguments);
     this.storageKey = 'LOCATIONS';
-    // protected seconds = 7200 * 1000; //2hour
-    this.seconds = 7;
+    this.seconds = 7200 * 1000; //2hour
+    // protected seconds = 7;
   }
 };
 LocationCacheService = __decorate([(0,_angular_core__WEBPACK_IMPORTED_MODULE_1__.Injectable)()], LocationCacheService);

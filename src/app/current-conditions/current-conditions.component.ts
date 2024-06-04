@@ -3,7 +3,7 @@ import {WeatherService} from '../weather.service';
 import {LocationService} from '../location.service';
 import {ConditionsAndZip} from '../conditions-and-zip.type';
 import {toObservable} from '@angular/core/rxjs-interop';
-import {filter, map, switchMap} from 'rxjs/operators';
+import {map, switchMap} from 'rxjs/operators';
 import {forkJoin, Observable, of} from 'rxjs';
 import {CurrentConditions} from './current-conditions.type';
 
@@ -17,11 +17,10 @@ export class CurrentConditionsComponent {
   weatherService = inject(WeatherService);
   protected locationService = inject(LocationService);
 
-// Observable that updates when the location changes and returns an array of conditions and zip codes
+  // Observable that updates when the location changes and returns an array of conditions and zip codes
   conditions$: Observable<ConditionsAndZip[]> = toObservable(this.locationService.locations).pipe(
-      filter((zip) => !!zip.length),
-      switchMap(zipCodes => this.fetchData(zipCodes)),
-      map((conditions: ConditionsAndZip[]) => conditions.filter(condition => condition.data))
+    switchMap(zipCodes => this.fetchData(zipCodes)),
+    map((conditions: ConditionsAndZip[]) => this.removeInvalidConditions(conditions))
   );
 
   zipTrack = (index: number, item: ConditionsAndZip) => item.zip;
@@ -36,6 +35,15 @@ export class CurrentConditionsComponent {
   private mapRequests(zipCodes: string[]): Observable<ConditionsAndZip>[] {
     return zipCodes.map(zipCode => {
       return this.weatherService.addCurrentConditionsObservable(zipCode).pipe(map((condition: CurrentConditions) => ({zip: zipCode, data: condition})))
+    });
+  }
+
+  private removeInvalidConditions(conditions: ConditionsAndZip[]): ConditionsAndZip[] {
+    return conditions.filter(condition => {
+      if (!condition.data) {
+        this.locationService.removeLocation(condition.zip);
+      }
+      return !!condition.data;
     });
   }
 }

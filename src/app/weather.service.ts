@@ -20,7 +20,7 @@ export class WeatherService {
   addCurrentConditionsObservable(zipcode: string):Observable<CurrentConditions> {
     // Here we make a request to get the current conditions data from the API. Note the use of backticks and an expression to insert the zipcode
     const request = this.http.get<CurrentConditions>(`${WeatherService.URL}/weather?zip=${zipcode},us&units=imperial&APPID=${WeatherService.APPID}`)
-        .pipe(catchError(() => of(null)));
+      .pipe(catchError(() => of(null)));
     return this.locationService.getDataOrFetch(request, zipcode);
   }
 
