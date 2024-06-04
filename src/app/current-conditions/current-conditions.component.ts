@@ -1,11 +1,15 @@
-import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject, OnDestroy} from '@angular/core';
 import {WeatherService} from '../weather.service';
 import {LocationService} from '../location.service';
 import {ConditionsAndZip} from '../conditions-and-zip.type';
 import {toObservable} from '@angular/core/rxjs-interop';
-import {map, switchMap} from 'rxjs/operators';
-import {forkJoin, Observable, of} from 'rxjs';
+import {debounceTime, distinctUntilChanged, map, switchMap, takeUntil} from 'rxjs/operators';
+import {forkJoin, Observable, of, Subject} from 'rxjs';
 import {CurrentConditions} from './current-conditions.type';
+import {LocationCacheService} from '../servises/location-cache.service';
+import {ForecastCacheService} from '../servises/forecast-cache.service';
+import {FormControl} from '@angular/forms';
+import {CacheService} from '../servises/cache.service';
 
 @Component({
   selector: 'app-current-conditions',
@@ -13,9 +17,26 @@ import {CurrentConditions} from './current-conditions.type';
   styleUrls: ['./current-conditions.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CurrentConditionsComponent {
+export class CurrentConditionsComponent implements OnDestroy {
   weatherService = inject(WeatherService);
   protected locationService = inject(LocationService);
+  protected locationCacheService = inject(LocationCacheService);
+  protected forecastCacheService = inject(ForecastCacheService);
+
+  locationFormControl = new FormControl(this.locationCacheService.seconds);
+  forecastFormControl = new FormControl(this.forecastCacheService.seconds);
+
+  private destroy$: Subject<void> = new Subject<void>();
+
+  constructor() {
+    this.setupFormControl(this.locationFormControl, this.locationCacheService);
+    this.setupFormControl(this.forecastFormControl, this.forecastCacheService);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
   // Observable that updates when the location changes and returns an array of conditions and zip codes
   conditions$: Observable<ConditionsAndZip[]> = toObservable(this.locationService.locations).pipe(
@@ -38,6 +59,7 @@ export class CurrentConditionsComponent {
     });
   }
 
+  // Remove invalid conditions (e.g., when data is not available)
   private removeInvalidConditions(conditions: ConditionsAndZip[]): ConditionsAndZip[] {
     return conditions.filter(condition => {
       if (!condition.data) {
@@ -45,5 +67,14 @@ export class CurrentConditionsComponent {
       }
       return !!condition.data;
     });
+  }
+
+  // Setup form control behavior to update cache service based on form value changes
+  private setupFormControl(formControl: FormControl, cacheService: CacheService<any>) {
+    formControl.valueChanges.pipe(
+      takeUntil(this.destroy$),
+      distinctUntilChanged(),
+      debounceTime(500)
+    ).subscribe(value => cacheService.seconds = value);
   }
 }

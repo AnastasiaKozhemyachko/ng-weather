@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { ZipcodeEntryComponent } from './zipcode-entry/zipcode-entry.component';
@@ -38,6 +38,7 @@ import {ForecastCacheService} from './servises/forecast-cache.service';
     ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production}),
     TabComponent,
     TabsComponent,
+    ReactiveFormsModule,
   ],
   providers: [LocationService, WeatherService, LocationCacheService, ForecastCacheService]
 })

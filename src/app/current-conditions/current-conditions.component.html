@@ -1,3 +1,11 @@
+<div>
+    <label>Time to cache the weather data:</label>
+    <input type="number" [formControl]="locationFormControl">
+</div><div>
+    <label>Time to cache the forecast data:</label>
+    <input type="number" [formControl]="forecastFormControl">
+</div>
+
 <app-tabs (tabClose)="locationService.removeLocation($event.zip)">
     <ng-container *ngFor="let location of conditions$ | async; let i = index; trackBy: zipTrack">
         <app-tab [titleTemplateRef]="titleTemplateRef"

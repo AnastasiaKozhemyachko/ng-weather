@@ -7,23 +7,31 @@ import {tap} from 'rxjs/operators';
   providedIn: 'root',
 })
 export abstract class CacheService<TItem> {
-  protected abstract seconds: number;
-  protected abstract storageKey: string;
+  protected abstract _seconds: number;
+  protected abstract _storageKey: string;
+
+  get seconds(): number {
+    return this._seconds;
+  }
+
+  set seconds(value: number | string) {
+    this._seconds = +value;
+  }
 
   constructor() {
     this.cleanExpiredData();
   }
 
   setData(data: TItem[]) {
-    const transformLocalStorage = data.map((value)=> this.transformToCacheItem(value, this.storageKey));
-    localStorage.setItem(this.storageKey, JSON.stringify(transformLocalStorage));
+    const transformLocalStorage = data.map((value)=> this.transformToCacheItem(value, this._storageKey));
+    localStorage.setItem(this._storageKey, JSON.stringify(transformLocalStorage));
   }
 
   addData(item: TItem, key: string | number): void {
     if (!item) {
       return;
     }
-    const currentData: ValueWithExpiry<TItem>[] = JSON.parse(localStorage.getItem(this.storageKey)) || [];
+    const currentData: ValueWithExpiry<TItem>[] = JSON.parse(localStorage.getItem(this._storageKey)) || [];
     const index = currentData.findIndex(cacheItem => cacheItem.key === key);
     const newCacheItem = this.transformToCacheItem(item, key);
 
@@ -33,11 +41,11 @@ export abstract class CacheService<TItem> {
       currentData.push(newCacheItem);
     }
 
-    localStorage.setItem(this.storageKey, JSON.stringify(currentData));
+    localStorage.setItem(this._storageKey, JSON.stringify(currentData));
   }
 
   getData(): ValueWithExpiry<TItem>[] {
-    return JSON.parse(localStorage.getItem(this.storageKey)) ?? [];
+    return JSON.parse(localStorage.getItem(this._storageKey)) ?? [];
   }
 
   getItemValue(key: string): TItem {
@@ -70,6 +78,6 @@ export abstract class CacheService<TItem> {
 
   private cleanExpiredData(): void {
     const validDate = this.getData().filter((value) => this.isDateValid(value.expiration));
-    localStorage.setItem(this.storageKey, JSON.stringify(validDate));
+    localStorage.setItem(this._storageKey, JSON.stringify(validDate));
   }
 }

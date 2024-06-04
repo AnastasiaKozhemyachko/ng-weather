@@ -101,7 +101,7 @@ AppModule = __decorate([(0,_angular_core__WEBPACK_IMPORTED_MODULE_13__.NgModule)
   declarations: [_app_component__WEBPACK_IMPORTED_MODULE_0__.AppComponent, _zipcode_entry_zipcode_entry_component__WEBPACK_IMPORTED_MODULE_1__.ZipcodeEntryComponent, _forecasts_list_forecasts_list_component__WEBPACK_IMPORTED_MODULE_3__.ForecastsListComponent, _current_conditions_current_conditions_component__WEBPACK_IMPORTED_MODULE_5__.CurrentConditionsComponent, _main_page_main_page_component__WEBPACK_IMPORTED_MODULE_6__.MainPageComponent],
   imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_14__.BrowserModule, _angular_forms__WEBPACK_IMPORTED_MODULE_15__.FormsModule, _angular_common_http__WEBPACK_IMPORTED_MODULE_16__.HttpClientModule, _angular_router__WEBPACK_IMPORTED_MODULE_17__.RouterModule, _app_routing__WEBPACK_IMPORTED_MODULE_7__.routing, _angular_service_worker__WEBPACK_IMPORTED_MODULE_18__.ServiceWorkerModule.register('/ngsw-worker.js', {
     enabled: _environments_environment__WEBPACK_IMPORTED_MODULE_8__.environment.production
-  }), _components_tab_tab_component__WEBPACK_IMPORTED_MODULE_9__.TabComponent, _components_tabs_tabs_component__WEBPACK_IMPORTED_MODULE_10__.TabsComponent],
+  }), _components_tab_tab_component__WEBPACK_IMPORTED_MODULE_9__.TabComponent, _components_tabs_tabs_component__WEBPACK_IMPORTED_MODULE_10__.TabsComponent, _angular_forms__WEBPACK_IMPORTED_MODULE_15__.ReactiveFormsModule],
   providers: [_location_service__WEBPACK_IMPORTED_MODULE_2__.LocationService, _weather_service__WEBPACK_IMPORTED_MODULE_4__.WeatherService, _servises_location_cache_service__WEBPACK_IMPORTED_MODULE_11__.LocationCacheService, _servises_forecast_cache_service__WEBPACK_IMPORTED_MODULE_12__.ForecastCacheService]
 })], AppModule);
 
@@ -293,14 +293,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _current_conditions_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./current-conditions.component.html?ngResource */ 4114);
 /* harmony import */ var _current_conditions_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./current-conditions.component.css?ngResource */ 539);
 /* harmony import */ var _current_conditions_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_current_conditions_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ 7580);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ 7580);
 /* harmony import */ var _weather_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../weather.service */ 3715);
 /* harmony import */ var _location_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../location.service */ 3026);
-/* harmony import */ var _angular_core_rxjs_interop__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/core/rxjs-interop */ 9074);
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs/operators */ 1963);
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! rxjs/operators */ 5443);
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! rxjs */ 8757);
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! rxjs */ 1536);
+/* harmony import */ var _angular_core_rxjs_interop__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/core/rxjs-interop */ 9074);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! rxjs/operators */ 1963);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! rxjs/operators */ 5443);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! rxjs/operators */ 7464);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! rxjs/operators */ 6109);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! rxjs/operators */ 9803);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! rxjs */ 3119);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! rxjs */ 8757);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! rxjs */ 1536);
+/* harmony import */ var _servises_location_cache_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../servises/location-cache.service */ 9390);
+/* harmony import */ var _servises_forecast_cache_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../servises/forecast-cache.service */ 924);
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/forms */ 4456);
 var __decorate = undefined && undefined.__decorate || function (decorators, target, key, desc) {
   var c = arguments.length,
     r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
@@ -316,28 +323,43 @@ var __decorate = undefined && undefined.__decorate || function (decorators, targ
 
 
 
+
+
+
 let CurrentConditionsComponent = class CurrentConditionsComponent {
   constructor() {
-    this.weatherService = (0,_angular_core__WEBPACK_IMPORTED_MODULE_4__.inject)(_weather_service__WEBPACK_IMPORTED_MODULE_2__.WeatherService);
-    this.locationService = (0,_angular_core__WEBPACK_IMPORTED_MODULE_4__.inject)(_location_service__WEBPACK_IMPORTED_MODULE_3__.LocationService);
+    this.weatherService = (0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.inject)(_weather_service__WEBPACK_IMPORTED_MODULE_2__.WeatherService);
+    this.locationService = (0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.inject)(_location_service__WEBPACK_IMPORTED_MODULE_3__.LocationService);
+    this.locationCacheService = (0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.inject)(_servises_location_cache_service__WEBPACK_IMPORTED_MODULE_4__.LocationCacheService);
+    this.forecastCacheService = (0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.inject)(_servises_forecast_cache_service__WEBPACK_IMPORTED_MODULE_5__.ForecastCacheService);
+    this.locationFormControl = new _angular_forms__WEBPACK_IMPORTED_MODULE_7__.FormControl(this.locationCacheService.seconds);
+    this.forecastFormControl = new _angular_forms__WEBPACK_IMPORTED_MODULE_7__.FormControl(this.forecastCacheService.seconds);
+    this.destroy$ = new rxjs__WEBPACK_IMPORTED_MODULE_8__.Subject();
     // Observable that updates when the location changes and returns an array of conditions and zip codes
-    this.conditions$ = (0,_angular_core_rxjs_interop__WEBPACK_IMPORTED_MODULE_5__.toObservable)(this.locationService.locations).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_6__.switchMap)(zipCodes => this.fetchData(zipCodes)), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_7__.map)(conditions => this.removeInvalidConditions(conditions)));
+    this.conditions$ = (0,_angular_core_rxjs_interop__WEBPACK_IMPORTED_MODULE_9__.toObservable)(this.locationService.locations).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_10__.switchMap)(zipCodes => this.fetchData(zipCodes)), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_11__.map)(conditions => this.removeInvalidConditions(conditions)));
     this.zipTrack = (index, item) => item.zip;
     // Fetch data for the given zip codes
     this.fetchData = zipCodes => {
       const requests = this.mapRequests(zipCodes);
-      return requests.length ? (0,rxjs__WEBPACK_IMPORTED_MODULE_8__.forkJoin)(requests) : (0,rxjs__WEBPACK_IMPORTED_MODULE_9__.of)([]);
+      return requests.length ? (0,rxjs__WEBPACK_IMPORTED_MODULE_12__.forkJoin)(requests) : (0,rxjs__WEBPACK_IMPORTED_MODULE_13__.of)([]);
     };
+    this.setupFormControl(this.locationFormControl, this.locationCacheService);
+    this.setupFormControl(this.forecastFormControl, this.forecastCacheService);
+  }
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
   // Map each zip code to an observable that fetches current conditions and pairs it with the zip code
   mapRequests(zipCodes) {
     return zipCodes.map(zipCode => {
-      return this.weatherService.addCurrentConditionsObservable(zipCode).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_7__.map)(condition => ({
+      return this.weatherService.addCurrentConditionsObservable(zipCode).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_11__.map)(condition => ({
         zip: zipCode,
         data: condition
       })));
     });
   }
+  // Remove invalid conditions (e.g., when data is not available)
   removeInvalidConditions(conditions) {
     return conditions.filter(condition => {
       if (!condition.data) {
@@ -346,11 +368,16 @@ let CurrentConditionsComponent = class CurrentConditionsComponent {
       return !!condition.data;
     });
   }
+  // Setup form control behavior to update cache service based on form value changes
+  setupFormControl(formControl, cacheService) {
+    formControl.valueChanges.pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_14__.takeUntil)(this.destroy$), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_15__.distinctUntilChanged)(), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_16__.debounceTime)(500)).subscribe(value => cacheService.seconds = value);
+  }
+  static #_ = this.ctorParameters = () => [];
 };
-CurrentConditionsComponent = __decorate([(0,_angular_core__WEBPACK_IMPORTED_MODULE_4__.Component)({
+CurrentConditionsComponent = __decorate([(0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.Component)({
   selector: 'app-current-conditions',
   template: _current_conditions_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
-  changeDetection: _angular_core__WEBPACK_IMPORTED_MODULE_4__.ChangeDetectionStrategy.OnPush,
+  changeDetection: _angular_core__WEBPACK_IMPORTED_MODULE_6__.ChangeDetectionStrategy.OnPush,
   styles: [(_current_conditions_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
 })], CurrentConditionsComponent);
 
@@ -504,18 +531,24 @@ var __decorate = undefined && undefined.__decorate || function (decorators, targ
 
 
 let CacheService = class CacheService {
+  get seconds() {
+    return this._seconds;
+  }
+  set seconds(value) {
+    this._seconds = +value;
+  }
   constructor() {
     this.cleanExpiredData();
   }
   setData(data) {
-    const transformLocalStorage = data.map(value => this.transformToCacheItem(value, this.storageKey));
-    localStorage.setItem(this.storageKey, JSON.stringify(transformLocalStorage));
+    const transformLocalStorage = data.map(value => this.transformToCacheItem(value, this._storageKey));
+    localStorage.setItem(this._storageKey, JSON.stringify(transformLocalStorage));
   }
   addData(item, key) {
     if (!item) {
       return;
     }
-    const currentData = JSON.parse(localStorage.getItem(this.storageKey)) || [];
+    const currentData = JSON.parse(localStorage.getItem(this._storageKey)) || [];
     const index = currentData.findIndex(cacheItem => cacheItem.key === key);
     const newCacheItem = this.transformToCacheItem(item, key);
     if (index !== -1) {
@@ -523,10 +556,10 @@ let CacheService = class CacheService {
     } else {
       currentData.push(newCacheItem);
     }
-    localStorage.setItem(this.storageKey, JSON.stringify(currentData));
+    localStorage.setItem(this._storageKey, JSON.stringify(currentData));
   }
   getData() {
-    return JSON.parse(localStorage.getItem(this.storageKey)) ?? [];
+    return JSON.parse(localStorage.getItem(this._storageKey)) ?? [];
   }
   getItemValue(key) {
     return this.getData()?.find(value => value.key === key)?.value;
@@ -553,7 +586,7 @@ let CacheService = class CacheService {
   }
   cleanExpiredData() {
     const validDate = this.getData().filter(value => this.isDateValid(value.expiration));
-    localStorage.setItem(this.storageKey, JSON.stringify(validDate));
+    localStorage.setItem(this._storageKey, JSON.stringify(validDate));
   }
   static #_ = this.ctorParameters = () => [];
 };
@@ -589,9 +622,8 @@ var __decorate = undefined && undefined.__decorate || function (decorators, targ
 let ForecastCacheService = class ForecastCacheService extends _cache_service__WEBPACK_IMPORTED_MODULE_0__.CacheService {
   constructor() {
     super(...arguments);
-    this.storageKey = 'FORECAST';
-    this.seconds = 7200 * 1000; //2hour
-    // protected seconds = 7;
+    this._storageKey = 'FORECAST';
+    this._seconds = 7200 * 1000; //2hour
   }
 };
 ForecastCacheService = __decorate([(0,_angular_core__WEBPACK_IMPORTED_MODULE_1__.Injectable)()], ForecastCacheService);
@@ -624,9 +656,8 @@ var __decorate = undefined && undefined.__decorate || function (decorators, targ
 let LocationCacheService = class LocationCacheService extends _cache_service__WEBPACK_IMPORTED_MODULE_0__.CacheService {
   constructor() {
     super(...arguments);
-    this.storageKey = 'LOCATIONS';
-    this.seconds = 7200 * 1000; //2hour
-    // protected seconds = 7;
+    this._storageKey = 'LOCATIONS';
+    this._seconds = 7200 * 1000; //2hour
   }
 };
 LocationCacheService = __decorate([(0,_angular_core__WEBPACK_IMPORTED_MODULE_1__.Injectable)()], LocationCacheService);
@@ -960,7 +991,7 @@ module.exports = "<div class=\"tab-container\" *ngIf=\"activeComponent\">\n    <
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<app-tabs (tabClose)=\"locationService.removeLocation($event.zip)\">\n    <ng-container *ngFor=\"let location of conditions$ | async; let i = index; trackBy: zipTrack\">\n        <app-tab [titleTemplateRef]=\"titleTemplateRef\"\n                 [bodyTemplateRef]=\"bodyTemplate\"\n                 [content]=\"location\"\n        ></app-tab>\n    </ng-container>\n</app-tabs>\n<ng-template #titleTemplateRef let-location>\n    <ng-container *ngIf=\"location\">{{location.data.name}} ({{location.zip}})</ng-container>\n</ng-template>\n\n<ng-template #bodyTemplate let-location>\n    <div *ngIf=\"location\" class=\"weather-container\">\n        <div>\n            <h3>{{location.data.name}} ({{location.zip}})</h3>\n\n            <h4>Current conditions: {{location.data.weather[0].main}}</h4>\n            <h4>Temperatures today:</h4>\n            <p>\n                Current {{location.data.main.temp | number:'.0-0'}}\n                - Max {{location.data.main.temp_max | number:'.0-0'}}\n                - Min {{location.data.main.temp_min | number:'.0-0'}}\n            </p>\n            <p>\n                <a [routerLink]=\"['/forecast', location.zip]\" >Show 5-day forecast for {{location.data.name}}</a>\n            </p>\n        </div>\n        <div>\n            <img [src]=\"weatherService.getWeatherIcon(location.data.weather[0].id)\">\n        </div>\n    </div>\n</ng-template>\n";
+module.exports = "<div>\n    <label>Time to cache the weather data:</label>\n    <input type=\"number\" [formControl]=\"locationFormControl\">\n</div><div>\n    <label>Time to cache the forecast data:</label>\n    <input type=\"number\" [formControl]=\"forecastFormControl\">\n</div>\n\n<app-tabs (tabClose)=\"locationService.removeLocation($event.zip)\">\n    <ng-container *ngFor=\"let location of conditions$ | async; let i = index; trackBy: zipTrack\">\n        <app-tab [titleTemplateRef]=\"titleTemplateRef\"\n                 [bodyTemplateRef]=\"bodyTemplate\"\n                 [content]=\"location\"\n        ></app-tab>\n    </ng-container>\n</app-tabs>\n<ng-template #titleTemplateRef let-location>\n    <ng-container *ngIf=\"location\">{{location.data.name}} ({{location.zip}})</ng-container>\n</ng-template>\n\n<ng-template #bodyTemplate let-location>\n    <div *ngIf=\"location\" class=\"weather-container\">\n        <div>\n            <h3>{{location.data.name}} ({{location.zip}})</h3>\n\n            <h4>Current conditions: {{location.data.weather[0].main}}</h4>\n            <h4>Temperatures today:</h4>\n            <p>\n                Current {{location.data.main.temp | number:'.0-0'}}\n                - Max {{location.data.main.temp_max | number:'.0-0'}}\n                - Min {{location.data.main.temp_min | number:'.0-0'}}\n            </p>\n            <p>\n                <a [routerLink]=\"['/forecast', location.zip]\" >Show 5-day forecast for {{location.data.name}}</a>\n            </p>\n        </div>\n        <div>\n            <img [src]=\"weatherService.getWeatherIcon(location.data.weather[0].id)\">\n        </div>\n    </div>\n</ng-template>\n";
 
 /***/ }),
 
