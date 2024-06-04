@@ -3,7 +3,6 @@ import {ChangeDetectionStrategy, Component, Input, TemplateRef} from '@angular/c
 @Component({
   selector: 'app-tab',
   standalone: true,
-  imports: [],
   templateUrl: './tab.component.html',
   styleUrl: './tab.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush

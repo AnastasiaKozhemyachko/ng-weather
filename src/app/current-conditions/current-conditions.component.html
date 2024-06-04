@@ -7,11 +7,11 @@
     </ng-container>
 </app-tabs>
 <ng-template #titleTemplateRef let-location>
-    <h3 *ngIf="location">{{location.data.name}} ({{location.zip}})</h3>
+    <ng-container *ngIf="location">{{location.data.name}} ({{location.zip}})</ng-container>
 </ng-template>
 
 <ng-template #bodyTemplate let-location>
-    <div *ngIf="location" class="weather-container" (click)="showForecast(location.zip)">
+    <div *ngIf="location" class="weather-container">
         <div>
             <h3>{{location.data.name}} ({{location.zip}})</h3>
 

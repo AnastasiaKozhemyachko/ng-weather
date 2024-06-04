@@ -1,11 +1,12 @@
 import {inject, Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 
 import {HttpClient} from '@angular/common/http';
 import {CurrentConditions} from './current-conditions/current-conditions.type';
 import {Forecast} from './forecasts-list/forecast.type';
 import {ForecastCacheService} from './servises/forecast-cache.service';
 import {LocationCacheService} from './servises/location-cache.service';
+import {catchError} from 'rxjs/operators';
 
 @Injectable()
 export class WeatherService {
@@ -18,12 +19,15 @@ export class WeatherService {
 
   addCurrentConditionsObservable(zipcode: string):Observable<CurrentConditions> {
     // Here we make a request to get the current conditions data from the API. Note the use of backticks and an expression to insert the zipcode
-    return this.locationService.getDataOrDoRequest(this.http.get<CurrentConditions>(`${WeatherService.URL}/weather?zip=${zipcode},us&units=imperial&APPID=${WeatherService.APPID}`), zipcode);
+    const request = this.http.get<CurrentConditions>(`${WeatherService.URL}/weather?zip=${zipcode},us&units=imperial&APPID=${WeatherService.APPID}`)
+        .pipe(catchError(() => of(null)));
+    return this.locationService.getDataOrFetch(request, zipcode);
   }
 
   getForecast(zipcode: string): Observable<Forecast> {
     // Here we make a request to get the forecast data from the API. Note the use of backticks and an expression to insert the zipcode
-    return this.forecastService.getDataOrDoRequest(this.http.get<Forecast>(`${WeatherService.URL}/forecast/daily?zip=${zipcode},us&units=imperial&cnt=5&APPID=${WeatherService.APPID}`), zipcode);
+    const request = this.http.get<Forecast>(`${WeatherService.URL}/forecast/daily?zip=${zipcode},us&units=imperial&cnt=5&APPID=${WeatherService.APPID}`);
+    return this.forecastService.getDataOrFetch(request, zipcode);
   }
 
   getWeatherIcon(id: number): string {

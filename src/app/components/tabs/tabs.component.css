@@ -3,41 +3,36 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    border-bottom: 1px solid #ccc;
     position: relative;
     gap: 5px;
 }
 
 .tab-item {
     display: flex;
-    padding: 10px;
+    padding: 5px;
     cursor: pointer;
-    background: #4690d0;
-    color: #e6ecfa;
+    background: #2e6da4;
+    border: 3px solid #2e6da4;
+    color: #ffffff;
+    align-items: center;
 }
 
 .tab-item.active {
-    border-bottom: 3px solid #293185;
-}
-
-.tab-item:hover {
-    background-color: #23305e;
+    border-bottom: 3px solid #1c2157;
 }
 
 .tab-item:not(.active):hover {
     border-bottom: 3px solid #ccc;
-    padding-bottom: 7px;
 }
 
 .tab-body {
-    border: 2px solid #232b38;
+    border: 1px solid #232b38;
 }
 
 .tab-close {
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid #1256cd;
     border-radius: 15px;
     height: 25px;
     width: 25px;

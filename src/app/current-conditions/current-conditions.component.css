@@ -1,4 +1,7 @@
 .weather-container {
   display: flex;
-  cursor: pointer;
+  padding: 2rem;
+  align-items: center;
+  justify-content: space-between;
+  background: #f7f7f7;
 }

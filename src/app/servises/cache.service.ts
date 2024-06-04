@@ -11,23 +11,29 @@ export abstract class CacheService<TItem> {
   protected abstract storageKey: string;
 
   constructor() {
-    this.deleteExpiriedDate();
+    this.cleanExpiredData();
   }
 
   setData(data: TItem[]) {
-    const transformLocalStorage = data.map((value)=> this.transformLocalStorage(value, this.storageKey));
+    const transformLocalStorage = data.map((value)=> this.transformToCacheItem(value, this.storageKey));
     localStorage.setItem(this.storageKey, JSON.stringify(transformLocalStorage));
   }
 
-  addData(data: TItem, key: string | number) {
-    let currentValue = JSON.parse(localStorage.getItem(this.storageKey)) || [];
-    const index = currentValue.findIndex(item => item.key === key);
-    if (index !== -1) {
-      currentValue[index] = this.transformLocalStorage(data, key);
-    } else {
-      currentValue = [...currentValue, this.transformLocalStorage(data, key)];
+  addData(item: TItem, key: string | number): void {
+    if (!item) {
+      return;
     }
-    localStorage.setItem(this.storageKey, JSON.stringify(currentValue));
+    const currentData: ValueWithExpiry<TItem>[] = JSON.parse(localStorage.getItem(this.storageKey)) || [];
+    const index = currentData.findIndex(cacheItem => cacheItem.key === key);
+    const newCacheItem = this.transformToCacheItem(item, key);
+
+    if (index !== -1) {
+      currentData[index] = newCacheItem;
+    } else {
+      currentData.push(newCacheItem);
+    }
+
+    localStorage.setItem(this.storageKey, JSON.stringify(currentData));
   }
 
   getData(): ValueWithExpiry<TItem>[] {
@@ -38,24 +44,23 @@ export abstract class CacheService<TItem> {
     return this.getData()?.find((value) => value.key === key)?.value;
   }
 
-  getNoExpirationItem(key: string): TItem {
-    return this.getData().find((value) => value.key === key && this.validDate(value.expiration))?.value;
+  getNonExpiredItem(key: string): TItem {
+    return this.getData().find((value) => value.key === key && this.isDateValid(value.expiration))?.value;
   }
 
-  private validDate(expiration: number): boolean {
-    return expiration > new Date().getTime();
-  }
-
-  getDataOrDoRequest(request: Observable<TItem>, zipcode): Observable<TItem> {
-    const validData = this.getNoExpirationItem(zipcode)
+  getDataOrFetch(request: Observable<TItem>, key: string): Observable<TItem> {
+    const validData = this.getNonExpiredItem(key)
     if (validData) {
       return of(validData)
     }
-    // Here we make a request to get the current conditions data from the API. Note the use of backticks and an expression to insert the zipcode
-    return request.pipe(tap((value) => this.addData(value, zipcode)));
+    return request.pipe(tap((value) => this.addData(value, key)));
   }
 
-  private transformLocalStorage(value:TItem, key: string | number): ValueWithExpiry<TItem> {
+  private isDateValid(expiration: number): boolean {
+    return expiration > new Date().getTime();
+  }
+
+  private transformToCacheItem(value:TItem, key: string | number): ValueWithExpiry<TItem> {
     return {
       key,
       value,
@@ -63,8 +68,8 @@ export abstract class CacheService<TItem> {
     }
   }
 
-  private deleteExpiriedDate(): void {
-    const validDate = this.getData().filter((value) => this.validDate(value.expiration));
+  private cleanExpiredData(): void {
+    const validDate = this.getData().filter((value) => this.isDateValid(value.expiration));
     localStorage.setItem(this.storageKey, JSON.stringify(validDate));
   }
 }

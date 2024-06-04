@@ -35,16 +35,19 @@ export class TabsComponent<TContent> implements AfterContentInit, OnDestroy {
   destroy$ = new Subject();
 
   ngAfterContentInit() {
-    // respond to changes in the tabs
-    this.tabs.changes.pipe(takeUntil(this.destroy$), filter(() => this.tabs.length > 0)).subscribe(() => {
-      if (!this.activeComponent) {
-        this.activateTab(this.tabs.first);
-      }
-      this.cdf.markForCheck();
-    });
+    // Subscribe to changes in the tabs QueryList
+    this.tabs.changes.pipe(
+        takeUntil(this.destroy$),
+        filter(() => this.tabs.length > 0)
+    ).subscribe(() => this.ensureActiveTab());
+
+    // Ensure there is an active tab initially if tabs are already present
+    if (this.tabs.length > 0) {
+      this.ensureActiveTab();
+    }
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
   }
@@ -53,15 +56,25 @@ export class TabsComponent<TContent> implements AfterContentInit, OnDestroy {
     this.activeComponent = tab;
   }
 
-  close(tab: TabComponent<TContent>, index: number) {
+  closeTab(tab: TabComponent<TContent>, index: number) {
     this.tabClose.emit(tab.content);
 
-    const array = this.tabs.toArray();
-    const deletedTab = array.splice(index, 1);
-    this.tabs.reset(array);
+    const tabsArray = this.tabs.toArray();
+    tabsArray.splice(index, 1);
+    this.tabs.reset(tabsArray);
 
-    if (deletedTab[0].content === tab.content){
-      this.activeComponent = this.tabs.first
+    if (this.activeComponent === tab) {
+      this.activeComponent = this.tabs.first || null;
     }
+
+    this.cdf.markForCheck();
+  }
+
+  // Method to ensure there is an active tab
+  private ensureActiveTab() {
+    if (!this.activeComponent) {
+      this.activateTab(this.tabs.first);
+    }
+    this.cdf.markForCheck();
   }
 }

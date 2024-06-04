@@ -8,7 +8,7 @@
                     [ngTemplateOutlet]="activeComponent.titleTemplateRef"
                     [ngTemplateOutletContext]=" {$implicit: tab.content}">
             </ng-template>
-            <p class="tab-close" (click)="close(tab, i)">X</p>
+            <div class="tab-close" (click)="closeTab(tab, i)">X</div>
         </div>
     </div>
     <div class="tab-body">
