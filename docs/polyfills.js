@@ -3122,7 +3122,7 @@ module.exports = function (it) {
 "use strict";
 
 var dP = (__webpack_require__(/*! ./_object-dp */ 798).f);
-var create = __webpack_require__(/*! ./_object-create */ 541);
+var create = __webpack_require__(/*! ./_object-create */ 2922);
 var redefineAll = __webpack_require__(/*! ./_redefine-all */ 4670);
 var ctx = __webpack_require__(/*! ./_ctx */ 9845);
 var anInstance = __webpack_require__(/*! ./_an-instance */ 8853);
@@ -3888,7 +3888,7 @@ module.exports = function (iterator, fn, value, entries) {
 
 "use strict";
 
-var create = __webpack_require__(/*! ./_object-create */ 541);
+var create = __webpack_require__(/*! ./_object-create */ 2922);
 var descriptor = __webpack_require__(/*! ./_property-desc */ 8505);
 var setToStringTag = __webpack_require__(/*! ./_set-to-string-tag */ 6405);
 var IteratorPrototype = {};
@@ -4224,7 +4224,7 @@ module.exports = !$assign || __webpack_require__(/*! ./_fails */ 9369)(function 
 
 /***/ }),
 
-/***/ 541:
+/***/ 2922:
 /*!********************************************************!*\
   !*** ./node_modules/core-js/modules/_object-create.js ***!
   \********************************************************/
@@ -4898,7 +4898,7 @@ $export($export.S + $export.F * !__webpack_require__(/*! ./_fails */ 9369)(funct
 
 // 26.1.2 Reflect.construct(target, argumentsList [, newTarget])
 var $export = __webpack_require__(/*! ./_export */ 3588);
-var create = __webpack_require__(/*! ./_object-create */ 541);
+var create = __webpack_require__(/*! ./_object-create */ 2922);
 var aFunction = __webpack_require__(/*! ./_a-function */ 8532);
 var anObject = __webpack_require__(/*! ./_an-object */ 7589);
 var isObject = __webpack_require__(/*! ./_is-object */ 1720);

@@ -1,11 +1,9 @@
-import {ChangeDetectionStrategy, Component, inject, OnDestroy} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, effect, inject, OnDestroy, signal} from '@angular/core';
 import {WeatherService} from '../weather.service';
 import {LocationService} from '../location.service';
 import {ConditionsAndZip} from '../conditions-and-zip.type';
-import {toObservable} from '@angular/core/rxjs-interop';
-import {debounceTime, distinctUntilChanged, map, switchMap, takeUntil} from 'rxjs/operators';
-import {forkJoin, Observable, of, Subject} from 'rxjs';
-import {CurrentConditions} from './current-conditions.type';
+import {debounceTime, distinctUntilChanged, takeUntil} from 'rxjs/operators';
+import {Subject} from 'rxjs';
 import {LocationCacheService} from '../servises/location-cache.service';
 import {ForecastCacheService} from '../servises/forecast-cache.service';
 import {FormControl} from '@angular/forms';
@@ -28,6 +26,20 @@ export class CurrentConditionsComponent implements OnDestroy {
 
   private destroy$: Subject<void> = new Subject<void>();
 
+  // Computed property to get current conditions for all locations
+  conditions = computed(() => {
+    const locations = this.locationService.locations();
+    return locations.map(zip => ({zip, data: this.locationCacheService.getItemValue(zip)}));
+  });
+
+  // Effect to load current conditions when a new location is added
+  loadConditions = effect(() => {
+    const zipCode = this.locationService.addLocationSignal();
+    if (zipCode) {
+      this.weatherService.addCurrentConditionsObservable(zipCode).subscribe(() => this.locationService.addLocation(zipCode));
+    }
+  }, {allowSignalWrites: true});
+
   constructor() {
     this.setupFormControl(this.locationFormControl, this.locationCacheService);
     this.setupFormControl(this.forecastFormControl, this.forecastCacheService);
@@ -38,36 +50,7 @@ export class CurrentConditionsComponent implements OnDestroy {
     this.destroy$.complete();
   }
 
-  // Observable that updates when the location changes and returns an array of conditions and zip codes
-  conditions$: Observable<ConditionsAndZip[]> = toObservable(this.locationService.locations).pipe(
-    switchMap(zipCodes => this.fetchData(zipCodes)),
-    map((conditions: ConditionsAndZip[]) => this.removeInvalidConditions(conditions))
-  );
-
   zipTrack = (index: number, item: ConditionsAndZip) => item.zip;
-
-  // Fetch data for the given zip codes
-  private fetchData = (zipCodes: string[]): Observable<ConditionsAndZip[]> => {
-    const requests = this.mapRequests(zipCodes);
-    return requests.length ? forkJoin(requests) : of([]);
-  }
-
-  // Map each zip code to an observable that fetches current conditions and pairs it with the zip code
-  private mapRequests(zipCodes: string[]): Observable<ConditionsAndZip>[] {
-    return zipCodes.map(zipCode => this.weatherService.addCurrentConditionsObservable(zipCode).pipe(
-      map((condition: CurrentConditions) => ({zip: zipCode, data: condition}))
-    ));
-  }
-
-  // Remove invalid conditions (e.g., when data is not available)
-  private removeInvalidConditions(conditions: ConditionsAndZip[]): ConditionsAndZip[] {
-    return conditions.filter(condition => {
-      if (!condition.data) {
-        this.locationService.removeLocation(condition.zip);
-      }
-      return !!condition.data;
-    });
-  }
 
   // Setup form control behavior to update cache service based on form value changes
   private setupFormControl(formControl: FormControl, cacheService: CacheService<any>) {
