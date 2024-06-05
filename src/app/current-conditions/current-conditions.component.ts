@@ -50,8 +50,6 @@ export class CurrentConditionsComponent implements OnDestroy {
     this.destroy$.complete();
   }
 
-  zipTrack = (index: number, item: ConditionsAndZip) => item.zip;
-
   // Setup form control behavior to update cache service based on form value changes
   private setupFormControl(formControl: FormControl, cacheService: CacheService<any>) {
     formControl.valueChanges.pipe(
