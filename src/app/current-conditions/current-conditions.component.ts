@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, computed, effect, inject, OnDestroy, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, effect, inject, OnDestroy} from '@angular/core';
 import {WeatherService} from '../weather.service';
 import {LocationService} from '../location.service';
 import {ConditionsAndZip} from '../conditions-and-zip.type';

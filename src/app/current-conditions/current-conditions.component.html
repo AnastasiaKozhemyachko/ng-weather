@@ -1,9 +1,9 @@
 <div>
-    <label>Time to cache the weather data:</label>
-    <input type="number" [formControl]="locationFormControl">
+    <label for="location">Time to cache the weather data:</label>
+    <input id="location" type="number" [formControl]="locationFormControl">
 </div><div>
-    <label>Time to cache the forecast data:</label>
-    <input type="number" [formControl]="forecastFormControl">
+    <label for="forecast">Time to cache the forecast data:</label>
+    <input id="forecast" [formControl]="forecastFormControl">
 </div>
 
 <app-tabs (tabClose)="locationService.removeLocation($event.zip)">
