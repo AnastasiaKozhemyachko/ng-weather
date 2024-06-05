@@ -64,8 +64,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @angular/common/http */ 6443);
 /* harmony import */ var _angular_service_worker__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @angular/service-worker */ 6140);
 /* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../environments/environment */ 5312);
-/* harmony import */ var _components_tab_tab_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/tab/tab.component */ 7857);
-/* harmony import */ var _components_tabs_tabs_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/tabs/tabs.component */ 2075);
+/* harmony import */ var _tab_tab_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./tab/tab.component */ 4800);
+/* harmony import */ var _tabs_tabs_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./tabs/tabs.component */ 154);
 /* harmony import */ var _servises_location_cache_service__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./servises/location-cache.service */ 9390);
 /* harmony import */ var _servises_forecast_cache_service__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./servises/forecast-cache.service */ 924);
 var __decorate = undefined && undefined.__decorate || function (decorators, target, key, desc) {
@@ -101,7 +101,7 @@ AppModule = __decorate([(0,_angular_core__WEBPACK_IMPORTED_MODULE_13__.NgModule)
   declarations: [_app_component__WEBPACK_IMPORTED_MODULE_0__.AppComponent, _zipcode_entry_zipcode_entry_component__WEBPACK_IMPORTED_MODULE_1__.ZipcodeEntryComponent, _forecasts_list_forecasts_list_component__WEBPACK_IMPORTED_MODULE_3__.ForecastsListComponent, _current_conditions_current_conditions_component__WEBPACK_IMPORTED_MODULE_5__.CurrentConditionsComponent, _main_page_main_page_component__WEBPACK_IMPORTED_MODULE_6__.MainPageComponent],
   imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_14__.BrowserModule, _angular_forms__WEBPACK_IMPORTED_MODULE_15__.FormsModule, _angular_common_http__WEBPACK_IMPORTED_MODULE_16__.HttpClientModule, _angular_router__WEBPACK_IMPORTED_MODULE_17__.RouterModule, _app_routing__WEBPACK_IMPORTED_MODULE_7__.routing, _angular_service_worker__WEBPACK_IMPORTED_MODULE_18__.ServiceWorkerModule.register('/ngsw-worker.js', {
     enabled: _environments_environment__WEBPACK_IMPORTED_MODULE_8__.environment.production
-  }), _components_tab_tab_component__WEBPACK_IMPORTED_MODULE_9__.TabComponent, _components_tabs_tabs_component__WEBPACK_IMPORTED_MODULE_10__.TabsComponent, _angular_forms__WEBPACK_IMPORTED_MODULE_15__.ReactiveFormsModule],
+  }), _tab_tab_component__WEBPACK_IMPORTED_MODULE_9__.TabComponent, _tabs_tabs_component__WEBPACK_IMPORTED_MODULE_10__.TabsComponent, _angular_forms__WEBPACK_IMPORTED_MODULE_15__.ReactiveFormsModule],
   providers: [_location_service__WEBPACK_IMPORTED_MODULE_2__.LocationService, _weather_service__WEBPACK_IMPORTED_MODULE_4__.WeatherService, _servises_location_cache_service__WEBPACK_IMPORTED_MODULE_11__.LocationCacheService, _servises_forecast_cache_service__WEBPACK_IMPORTED_MODULE_12__.ForecastCacheService]
 })], AppModule);
 
@@ -133,149 +133,6 @@ const appRoutes = [{
   component: _forecasts_list_forecasts_list_component__WEBPACK_IMPORTED_MODULE_0__.ForecastsListComponent
 }];
 const routing = _angular_router__WEBPACK_IMPORTED_MODULE_2__.RouterModule.forRoot(appRoutes, {});
-
-/***/ }),
-
-/***/ 7857:
-/*!*************************************************!*\
-  !*** ./src/app/components/tab/tab.component.ts ***!
-  \*************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   TabComponent: () => (/* binding */ TabComponent)
-/* harmony export */ });
-/* harmony import */ var _tab_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./tab.component.html?ngResource */ 7315);
-/* harmony import */ var _tab_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tab.component.css?ngResource */ 9722);
-/* harmony import */ var _tab_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_tab_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ 7580);
-var __decorate = undefined && undefined.__decorate || function (decorators, target, key, desc) {
-  var c = arguments.length,
-    r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
-    d;
-  if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-  return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-
-
-
-let TabComponent = class TabComponent {
-  static #_ = this.propDecorators = {
-    titleTemplateRef: [{
-      type: _angular_core__WEBPACK_IMPORTED_MODULE_2__.Input
-    }],
-    bodyTemplateRef: [{
-      type: _angular_core__WEBPACK_IMPORTED_MODULE_2__.Input
-    }],
-    content: [{
-      type: _angular_core__WEBPACK_IMPORTED_MODULE_2__.Input
-    }]
-  };
-};
-TabComponent = __decorate([(0,_angular_core__WEBPACK_IMPORTED_MODULE_2__.Component)({
-  selector: 'app-tab',
-  standalone: true,
-  template: _tab_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
-  changeDetection: _angular_core__WEBPACK_IMPORTED_MODULE_2__.ChangeDetectionStrategy.OnPush,
-  styles: [(_tab_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
-})], TabComponent);
-
-
-/***/ }),
-
-/***/ 2075:
-/*!***************************************************!*\
-  !*** ./src/app/components/tabs/tabs.component.ts ***!
-  \***************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   TabsComponent: () => (/* binding */ TabsComponent)
-/* harmony export */ });
-/* harmony import */ var _tabs_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./tabs.component.html?ngResource */ 5965);
-/* harmony import */ var _tabs_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tabs.component.css?ngResource */ 4436);
-/* harmony import */ var _tabs_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_tabs_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ 7580);
-/* harmony import */ var _tab_tab_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../tab/tab.component */ 7857);
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/common */ 316);
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ 3119);
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs/operators */ 7464);
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs/operators */ 8627);
-var __decorate = undefined && undefined.__decorate || function (decorators, target, key, desc) {
-  var c = arguments.length,
-    r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
-    d;
-  if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-  return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-
-
-
-
-
-
-
-let TabsComponent = class TabsComponent {
-  constructor() {
-    this.tabClose = new _angular_core__WEBPACK_IMPORTED_MODULE_3__.EventEmitter();
-    this.cdf = (0,_angular_core__WEBPACK_IMPORTED_MODULE_3__.inject)(_angular_core__WEBPACK_IMPORTED_MODULE_3__.ChangeDetectorRef);
-    this.destroy$ = new rxjs__WEBPACK_IMPORTED_MODULE_4__.Subject();
-  }
-  ngAfterContentInit() {
-    // Subscribe to changes in the tabs QueryList
-    this.tabs.changes.pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_5__.takeUntil)(this.destroy$), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_6__.filter)(() => this.tabs.length > 0)).subscribe(() => this.ensureActiveTab());
-    // Ensure there is an active tab initially if tabs are already present
-    if (this.tabs.length > 0) {
-      this.ensureActiveTab();
-    }
-  }
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-  activateTab(tab) {
-    this.activeComponent = tab;
-  }
-  closeTab(tab, index) {
-    this.tabClose.emit(tab.content);
-    const tabsArray = this.tabs.toArray();
-    tabsArray.splice(index, 1);
-    this.tabs.reset(tabsArray);
-    if (this.activeComponent === tab) {
-      this.activeComponent = this.tabs.first || null;
-    }
-    this.cdf.markForCheck();
-  }
-  // Method to ensure there is an active tab
-  ensureActiveTab() {
-    if (!this.activeComponent) {
-      this.activateTab(this.tabs.first);
-    }
-    this.cdf.markForCheck();
-  }
-  static #_ = this.propDecorators = {
-    tabs: [{
-      type: _angular_core__WEBPACK_IMPORTED_MODULE_3__.ContentChildren,
-      args: [_tab_tab_component__WEBPACK_IMPORTED_MODULE_2__.TabComponent]
-    }],
-    tabClose: [{
-      type: _angular_core__WEBPACK_IMPORTED_MODULE_3__.Output
-    }]
-  };
-};
-TabsComponent = __decorate([(0,_angular_core__WEBPACK_IMPORTED_MODULE_3__.Component)({
-  selector: 'app-tabs',
-  standalone: true,
-  imports: [_angular_common__WEBPACK_IMPORTED_MODULE_7__.NgForOf, _angular_common__WEBPACK_IMPORTED_MODULE_7__.NgTemplateOutlet, _angular_common__WEBPACK_IMPORTED_MODULE_7__.NgIf],
-  template: _tabs_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
-  changeDetection: _angular_core__WEBPACK_IMPORTED_MODULE_3__.ChangeDetectionStrategy.OnPush,
-  styles: [(_tabs_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
-})], TabsComponent);
-
 
 /***/ }),
 
@@ -352,12 +209,10 @@ let CurrentConditionsComponent = class CurrentConditionsComponent {
   }
   // Map each zip code to an observable that fetches current conditions and pairs it with the zip code
   mapRequests(zipCodes) {
-    return zipCodes.map(zipCode => {
-      return this.weatherService.addCurrentConditionsObservable(zipCode).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_11__.map)(condition => ({
-        zip: zipCode,
-        data: condition
-      })));
-    });
+    return zipCodes.map(zipCode => this.weatherService.addCurrentConditionsObservable(zipCode).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_11__.map)(condition => ({
+      zip: zipCode,
+      data: condition
+    }))));
   }
   // Remove invalid conditions (e.g., when data is not available)
   removeInvalidConditions(conditions) {
@@ -665,6 +520,149 @@ LocationCacheService = __decorate([(0,_angular_core__WEBPACK_IMPORTED_MODULE_1__
 
 /***/ }),
 
+/***/ 4800:
+/*!**************************************!*\
+  !*** ./src/app/tab/tab.component.ts ***!
+  \**************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   TabComponent: () => (/* binding */ TabComponent)
+/* harmony export */ });
+/* harmony import */ var _tab_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./tab.component.html?ngResource */ 6424);
+/* harmony import */ var _tab_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tab.component.css?ngResource */ 8553);
+/* harmony import */ var _tab_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_tab_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ 7580);
+var __decorate = undefined && undefined.__decorate || function (decorators, target, key, desc) {
+  var c = arguments.length,
+    r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
+    d;
+  if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+  return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+let TabComponent = class TabComponent {
+  static #_ = this.propDecorators = {
+    titleTemplateRef: [{
+      type: _angular_core__WEBPACK_IMPORTED_MODULE_2__.Input
+    }],
+    bodyTemplateRef: [{
+      type: _angular_core__WEBPACK_IMPORTED_MODULE_2__.Input
+    }],
+    content: [{
+      type: _angular_core__WEBPACK_IMPORTED_MODULE_2__.Input
+    }]
+  };
+};
+TabComponent = __decorate([(0,_angular_core__WEBPACK_IMPORTED_MODULE_2__.Component)({
+  selector: 'app-tab',
+  standalone: true,
+  template: _tab_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
+  changeDetection: _angular_core__WEBPACK_IMPORTED_MODULE_2__.ChangeDetectionStrategy.OnPush,
+  styles: [(_tab_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
+})], TabComponent);
+
+
+/***/ }),
+
+/***/ 154:
+/*!****************************************!*\
+  !*** ./src/app/tabs/tabs.component.ts ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   TabsComponent: () => (/* binding */ TabsComponent)
+/* harmony export */ });
+/* harmony import */ var _tabs_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./tabs.component.html?ngResource */ 1554);
+/* harmony import */ var _tabs_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tabs.component.css?ngResource */ 4371);
+/* harmony import */ var _tabs_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_tabs_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ 7580);
+/* harmony import */ var _tab_tab_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../tab/tab.component */ 4800);
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/common */ 316);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ 3119);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs/operators */ 7464);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs/operators */ 8627);
+var __decorate = undefined && undefined.__decorate || function (decorators, target, key, desc) {
+  var c = arguments.length,
+    r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
+    d;
+  if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+  return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+
+
+
+
+let TabsComponent = class TabsComponent {
+  constructor() {
+    this.tabClose = new _angular_core__WEBPACK_IMPORTED_MODULE_3__.EventEmitter();
+    this.cdf = (0,_angular_core__WEBPACK_IMPORTED_MODULE_3__.inject)(_angular_core__WEBPACK_IMPORTED_MODULE_3__.ChangeDetectorRef);
+    this.destroy$ = new rxjs__WEBPACK_IMPORTED_MODULE_4__.Subject();
+  }
+  ngAfterContentInit() {
+    // Subscribe to changes in the tabs QueryList
+    this.tabs.changes.pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_5__.takeUntil)(this.destroy$), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_6__.filter)(() => this.tabs.length > 0)).subscribe(() => this.ensureActiveTab());
+    // Ensure there is an active tab initially if tabs are already present
+    if (this.tabs.length > 0) {
+      this.ensureActiveTab();
+    }
+  }
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+  activateTab(tab) {
+    this.activeComponent = tab;
+  }
+  closeTab(tab, index) {
+    this.tabClose.emit(tab.content);
+    const tabsArray = this.tabs.toArray();
+    tabsArray.splice(index, 1);
+    this.tabs.reset(tabsArray);
+    if (this.activeComponent === tab) {
+      this.activeComponent = this.tabs.first || null;
+    }
+    this.cdf.markForCheck();
+  }
+  // Method to ensure there is an active tab
+  ensureActiveTab() {
+    if (!this.activeComponent) {
+      this.activateTab(this.tabs.first);
+    }
+    this.cdf.markForCheck();
+  }
+  static #_ = this.propDecorators = {
+    tabs: [{
+      type: _angular_core__WEBPACK_IMPORTED_MODULE_3__.ContentChildren,
+      args: [_tab_tab_component__WEBPACK_IMPORTED_MODULE_2__.TabComponent]
+    }],
+    tabClose: [{
+      type: _angular_core__WEBPACK_IMPORTED_MODULE_3__.Output
+    }]
+  };
+};
+TabsComponent = __decorate([(0,_angular_core__WEBPACK_IMPORTED_MODULE_3__.Component)({
+  selector: 'app-tabs',
+  standalone: true,
+  imports: [_angular_common__WEBPACK_IMPORTED_MODULE_7__.NgForOf, _angular_common__WEBPACK_IMPORTED_MODULE_7__.NgTemplateOutlet, _angular_common__WEBPACK_IMPORTED_MODULE_7__.NgIf],
+  template: _tabs_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
+  changeDetection: _angular_core__WEBPACK_IMPORTED_MODULE_3__.ChangeDetectionStrategy.OnPush,
+  styles: [(_tabs_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
+})], TabsComponent);
+
+
+/***/ }),
+
 /***/ 3715:
 /*!************************************!*\
   !*** ./src/app/weather.service.ts ***!
@@ -825,82 +823,6 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 
 /***/ }),
 
-/***/ 9722:
-/*!*************************************************************!*\
-  !*** ./src/app/components/tab/tab.component.css?ngResource ***!
-  \*************************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-// Imports
-var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ 3142);
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ 5950);
-var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
-// Module
-___CSS_LOADER_EXPORT___.push([module.id, ``, "",{"version":3,"sources":[],"names":[],"mappings":"","sourceRoot":""}]);
-// Exports
-module.exports = ___CSS_LOADER_EXPORT___.toString();
-
-
-/***/ }),
-
-/***/ 4436:
-/*!***************************************************************!*\
-  !*** ./src/app/components/tabs/tabs.component.css?ngResource ***!
-  \***************************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-// Imports
-var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ 3142);
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ 5950);
-var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
-// Module
-___CSS_LOADER_EXPORT___.push([module.id, `
-.tab-header {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    position: relative;
-    gap: 5px;
-}
-
-.tab-item {
-    display: flex;
-    padding: 5px;
-    cursor: pointer;
-    background: #2e6da4;
-    border: 3px solid #2e6da4;
-    color: #ffffff;
-    align-items: center;
-}
-
-.tab-item.active {
-    border-bottom: 3px solid #1c2157;
-}
-
-.tab-item:not(.active):hover {
-    border-bottom: 3px solid #ccc;
-}
-
-.tab-body {
-    border: 1px solid #232b38;
-}
-
-.tab-close {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 15px;
-    height: 25px;
-    width: 25px;
-}
-
-`, "",{"version":3,"sources":["webpack://./src/app/components/tabs/tabs.component.css"],"names":[],"mappings":";AACA;IACI,aAAa;IACb,eAAe;IACf,mBAAmB;IACnB,kBAAkB;IAClB,QAAQ;AACZ;;AAEA;IACI,aAAa;IACb,YAAY;IACZ,eAAe;IACf,mBAAmB;IACnB,yBAAyB;IACzB,cAAc;IACd,mBAAmB;AACvB;;AAEA;IACI,gCAAgC;AACpC;;AAEA;IACI,6BAA6B;AACjC;;AAEA;IACI,yBAAyB;AAC7B;;AAEA;IACI,aAAa;IACb,uBAAuB;IACvB,mBAAmB;IACnB,mBAAmB;IACnB,YAAY;IACZ,WAAW;AACf","sourcesContent":["\n.tab-header {\n    display: flex;\n    flex-wrap: wrap;\n    align-items: center;\n    position: relative;\n    gap: 5px;\n}\n\n.tab-item {\n    display: flex;\n    padding: 5px;\n    cursor: pointer;\n    background: #2e6da4;\n    border: 3px solid #2e6da4;\n    color: #ffffff;\n    align-items: center;\n}\n\n.tab-item.active {\n    border-bottom: 3px solid #1c2157;\n}\n\n.tab-item:not(.active):hover {\n    border-bottom: 3px solid #ccc;\n}\n\n.tab-body {\n    border: 1px solid #232b38;\n}\n\n.tab-close {\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    border-radius: 15px;\n    height: 25px;\n    width: 25px;\n}\n\n"],"sourceRoot":""}]);
-// Exports
-module.exports = ___CSS_LOADER_EXPORT___.toString();
-
-
-/***/ }),
-
 /***/ 539:
 /*!********************************************************************************!*\
   !*** ./src/app/current-conditions/current-conditions.component.css?ngResource ***!
@@ -951,6 +873,81 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 
 /***/ }),
 
+/***/ 8553:
+/*!**************************************************!*\
+  !*** ./src/app/tab/tab.component.css?ngResource ***!
+  \**************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+// Imports
+var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ 3142);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ 5950);
+var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, ``, "",{"version":3,"sources":[],"names":[],"mappings":"","sourceRoot":""}]);
+// Exports
+module.exports = ___CSS_LOADER_EXPORT___.toString();
+
+
+/***/ }),
+
+/***/ 4371:
+/*!****************************************************!*\
+  !*** ./src/app/tabs/tabs.component.css?ngResource ***!
+  \****************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+// Imports
+var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ 3142);
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ 5950);
+var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, `.tab-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    position: relative;
+    gap: 5px;
+}
+
+.tab-item {
+    display: flex;
+    padding: 5px;
+    cursor: pointer;
+    background: #2e6da4;
+    border: 3px solid #2e6da4;
+    color: #ffffff;
+    align-items: center;
+}
+
+.tab-item.active {
+    border-bottom: 3px solid #1c2157;
+}
+
+.tab-item:not(.active):hover {
+    border-bottom: 3px solid #ccc;
+}
+
+.tab-body {
+    border: 1px solid #232b38;
+}
+
+.tab-close {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    height: 25px;
+    width: 25px;
+}
+
+`, "",{"version":3,"sources":["webpack://./src/app/tabs/tabs.component.css"],"names":[],"mappings":"AAAA;IACI,aAAa;IACb,eAAe;IACf,mBAAmB;IACnB,kBAAkB;IAClB,QAAQ;AACZ;;AAEA;IACI,aAAa;IACb,YAAY;IACZ,eAAe;IACf,mBAAmB;IACnB,yBAAyB;IACzB,cAAc;IACd,mBAAmB;AACvB;;AAEA;IACI,gCAAgC;AACpC;;AAEA;IACI,6BAA6B;AACjC;;AAEA;IACI,yBAAyB;AAC7B;;AAEA;IACI,aAAa;IACb,uBAAuB;IACvB,mBAAmB;IACnB,mBAAmB;IACnB,YAAY;IACZ,WAAW;AACf","sourcesContent":[".tab-header {\n    display: flex;\n    flex-wrap: wrap;\n    align-items: center;\n    position: relative;\n    gap: 5px;\n}\n\n.tab-item {\n    display: flex;\n    padding: 5px;\n    cursor: pointer;\n    background: #2e6da4;\n    border: 3px solid #2e6da4;\n    color: #ffffff;\n    align-items: center;\n}\n\n.tab-item.active {\n    border-bottom: 3px solid #1c2157;\n}\n\n.tab-item:not(.active):hover {\n    border-bottom: 3px solid #ccc;\n}\n\n.tab-body {\n    border: 1px solid #232b38;\n}\n\n.tab-close {\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    border-radius: 15px;\n    height: 25px;\n    width: 25px;\n}\n\n"],"sourceRoot":""}]);
+// Exports
+module.exports = ___CSS_LOADER_EXPORT___.toString();
+
+
+/***/ }),
+
 /***/ 1584:
 /*!***********************************************!*\
   !*** ./src/app/app.component.html?ngResource ***!
@@ -959,28 +956,6 @@ module.exports = ___CSS_LOADER_EXPORT___.toString();
 
 "use strict";
 module.exports = "<router-outlet></router-outlet>\n";
-
-/***/ }),
-
-/***/ 7315:
-/*!**************************************************************!*\
-  !*** ./src/app/components/tab/tab.component.html?ngResource ***!
-  \**************************************************************/
-/***/ ((module) => {
-
-"use strict";
-module.exports = "";
-
-/***/ }),
-
-/***/ 5965:
-/*!****************************************************************!*\
-  !*** ./src/app/components/tabs/tabs.component.html?ngResource ***!
-  \****************************************************************/
-/***/ ((module) => {
-
-"use strict";
-module.exports = "<div class=\"tab-container\" *ngIf=\"activeComponent\">\n    <div class=\"tab-header\">\n        <div  *ngFor=\"let tab of tabs; let i = index\"\n              (click)=\"activateTab(tab)\"\n              [class.active]=\"tab === activeComponent\"\n             class=\"tab-item\">\n            <ng-template\n                    [ngTemplateOutlet]=\"activeComponent.titleTemplateRef\"\n                    [ngTemplateOutletContext]=\" {$implicit: tab.content}\">\n            </ng-template>\n            <div class=\"tab-close\" (click)=\"closeTab(tab, i)\">X</div>\n        </div>\n    </div>\n    <div class=\"tab-body\">\n        <ng-template\n                [ngTemplateOutlet]=\"activeComponent.bodyTemplateRef\"\n                [ngTemplateOutletContext]=\" {$implicit: activeComponent.content}\">\n        </ng-template>\n    </div>\n</div>\n\n\n\n";
 
 /***/ }),
 
@@ -1014,6 +989,28 @@ module.exports = "<div>\n  <div class=\"panel panel-default\" *ngIf=\"forecast$ 
 
 "use strict";
 module.exports = "<div class=\"container-fluid\">\n\n  <app-zipcode-entry> </app-zipcode-entry>\n  <app-current-conditions></app-current-conditions>\n\n</div>\n";
+
+/***/ }),
+
+/***/ 6424:
+/*!***************************************************!*\
+  !*** ./src/app/tab/tab.component.html?ngResource ***!
+  \***************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = "";
+
+/***/ }),
+
+/***/ 1554:
+/*!*****************************************************!*\
+  !*** ./src/app/tabs/tabs.component.html?ngResource ***!
+  \*****************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = "<div class=\"tab-container\" *ngIf=\"activeComponent\">\n    <div class=\"tab-header\">\n        <div  *ngFor=\"let tab of tabs; let i = index\"\n              (click)=\"activateTab(tab)\"\n              [class.active]=\"tab === activeComponent\"\n             class=\"tab-item\">\n            <ng-template\n                    [ngTemplateOutlet]=\"activeComponent.titleTemplateRef\"\n                    [ngTemplateOutletContext]=\" {$implicit: tab.content}\">\n            </ng-template>\n            <div class=\"tab-close\" (click)=\"closeTab(tab, i)\">X</div>\n        </div>\n    </div>\n    <div class=\"tab-body\">\n        <ng-template\n                [ngTemplateOutlet]=\"activeComponent.bodyTemplateRef\"\n                [ngTemplateOutletContext]=\" {$implicit: activeComponent.content}\">\n        </ng-template>\n    </div>\n</div>\n";
 
 /***/ }),
 

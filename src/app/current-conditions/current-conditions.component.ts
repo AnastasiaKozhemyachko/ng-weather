@@ -54,9 +54,9 @@ export class CurrentConditionsComponent implements OnDestroy {
 
   // Map each zip code to an observable that fetches current conditions and pairs it with the zip code
   private mapRequests(zipCodes: string[]): Observable<ConditionsAndZip>[] {
-    return zipCodes.map(zipCode => {
-      return this.weatherService.addCurrentConditionsObservable(zipCode).pipe(map((condition: CurrentConditions) => ({zip: zipCode, data: condition})))
-    });
+    return zipCodes.map(zipCode => this.weatherService.addCurrentConditionsObservable(zipCode).pipe(
+      map((condition: CurrentConditions) => ({zip: zipCode, data: condition}))
+    ));
   }
 
   // Remove invalid conditions (e.g., when data is not available)

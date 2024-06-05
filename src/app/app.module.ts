@@ -14,8 +14,8 @@ import {routing} from "./app.routing";
 import {HttpClientModule} from "@angular/common/http";
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
-import {TabComponent} from './components/tab/tab.component';
-import {TabsComponent} from './components/tabs/tabs.component';
+import {TabComponent} from './tab/tab.component';
+import {TabsComponent} from './tabs/tabs.component';
 import {LocationCacheService} from './servises/location-cache.service';
 import {ForecastCacheService} from './servises/forecast-cache.service';
 
