@@ -1,13 +1,12 @@
 import {ChangeDetectionStrategy, Component, computed, effect, inject, OnDestroy} from '@angular/core';
 import {WeatherService} from '../weather.service';
 import {LocationService} from '../location.service';
-import {ConditionsAndZip} from '../conditions-and-zip.type';
 import {debounceTime, distinctUntilChanged, takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs';
-import {LocationCacheService} from '../servises/location-cache.service';
-import {ForecastCacheService} from '../servises/forecast-cache.service';
+import {LocationCacheService} from '../services/location-cache.service';
+import {ForecastCacheService} from '../services/forecast-cache.service';
 import {FormControl} from '@angular/forms';
-import {CacheService} from '../servises/cache.service';
+import {CacheService} from '../services/cache.service';
 
 @Component({
   selector: 'app-current-conditions',
@@ -29,25 +28,37 @@ export class CurrentConditionsComponent implements OnDestroy {
   // Computed property to get current conditions for all locations
   conditions = computed(() => {
     const locations = this.locationService.locations();
-    return locations.map(zip => ({zip, data: this.locationCacheService.getItemValue(zip)}));
+    return locations
+      .map(zip => {
+        const { isShow, conditions } = this.locationCacheService.getItemValue(zip);
+        return isShow ? { zip, data: conditions } : null;
+      })
+      .filter(item => item !== null);
   });
-
-  // Effect to load current conditions when a new location is added
-  loadConditions = effect(() => {
-    const zipCode = this.locationService.addLocationSignal();
-    if (zipCode) {
-      this.weatherService.addCurrentConditionsObservable(zipCode).subscribe(() => this.locationService.addLocation(zipCode));
-    }
-  }, {allowSignalWrites: true});
 
   constructor() {
     this.setupFormControl(this.locationFormControl, this.locationCacheService);
     this.setupFormControl(this.forecastFormControl, this.forecastCacheService);
+    this.setInitialLocatonFromCache();
+
+    // Effect to load current conditions when a new location is added
+    effect(() => {
+      const zipCode = this.locationService.addLocationSignal();
+      if (zipCode) {
+        this.weatherService.addCurrentConditionsObservable(zipCode).subscribe(() => this.locationService.addLocation(zipCode));
+      }
+    }, {allowSignalWrites: true});
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+    this.locationService.resetSignalsValue();
+  }
+
+  removeLocation(zip: string) {
+    this.locationService.removeLocation(zip);
+    this.locationCacheService.switchShow(zip, false);
   }
 
   // Setup form control behavior to update cache service based on form value changes
@@ -57,5 +68,12 @@ export class CurrentConditionsComponent implements OnDestroy {
       distinctUntilChanged(),
       debounceTime(500)
     ).subscribe(value => cacheService.seconds = value);
+  }
+
+  private setInitialLocatonFromCache() {
+    const actualValueFromCache = this.locationCacheService.getData()
+      .filter(value => value.value.isShow)
+      .map(value => <string>value.key)
+    this.locationService.locations.set(actualValueFromCache);
   }
 }

@@ -4,6 +4,9 @@ import {Forecast} from '../forecasts-list/forecast.type';
 
 @Injectable()
 export class ForecastCacheService extends CacheService<Forecast>{
-    protected _storageKey = 'FORECAST';
     protected _seconds = 7200 * 1000; //2hour
+
+    constructor() {
+        super('FORECAST');
+    }
 }

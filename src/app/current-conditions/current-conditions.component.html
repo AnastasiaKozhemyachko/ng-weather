@@ -6,7 +6,7 @@
     <input id="forecast" [formControl]="forecastFormControl">
 </div>
 
-<app-tabs (tabClose)="locationService.removeLocation($event.zip)">
+<app-tabs (tabClose)="removeLocation($event.zip)">
     <ng-container *ngFor="let location of conditions(); let i = index">
         <app-tab [titleTemplateRef]="titleTemplateRef"
                  [bodyTemplateRef]="bodyTemplate"

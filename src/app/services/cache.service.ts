@@ -8,7 +8,6 @@ import {tap} from 'rxjs/operators';
 })
 export abstract class CacheService<TItem> {
   protected abstract _seconds: number;
-  protected abstract _storageKey: string;
 
   get seconds(): number {
     return this._seconds;
@@ -18,20 +17,20 @@ export abstract class CacheService<TItem> {
     this._seconds = +value;
   }
 
-  constructor() {
-    this.cleanExpiredData();
+  protected constructor(protected storageKey: string) {
+    this.cleanExpiredData(storageKey);
   }
 
   setData(data: TItem[]) {
-    const transformLocalStorage = data.map((value)=> this.transformToCacheItem(value, this._storageKey));
-    localStorage.setItem(this._storageKey, JSON.stringify(transformLocalStorage));
+    const transformLocalStorage = data.map((value)=> this.transformToCacheItem(value, this.storageKey));
+    localStorage.setItem(this.storageKey, JSON.stringify(transformLocalStorage));
   }
 
   addData(item: TItem, key: string | number): void {
     if (!item) {
       return;
     }
-    const currentData: ValueWithExpiry<TItem>[] = JSON.parse(localStorage.getItem(this._storageKey)) || [];
+    const currentData: ValueWithExpiry<TItem>[] = JSON.parse(localStorage.getItem(this.storageKey)) || [];
     const index = currentData.findIndex(cacheItem => cacheItem.key === key);
     const newCacheItem = this.transformToCacheItem(item, key);
 
@@ -41,11 +40,22 @@ export abstract class CacheService<TItem> {
       currentData.push(newCacheItem);
     }
 
-    localStorage.setItem(this._storageKey, JSON.stringify(currentData));
+    localStorage.setItem(this.storageKey, JSON.stringify(currentData));
+  }
+
+  removeData(key: string | number): void {
+    const currentData: ValueWithExpiry<TItem>[] = JSON.parse(localStorage.getItem(this.storageKey)) || [];
+    const index = currentData.findIndex(cacheItem => cacheItem.key === key);
+
+    if (index !== -1) {
+      currentData.splice(index, 1);
+    }
+
+    localStorage.setItem(this.storageKey, JSON.stringify(currentData));
   }
 
   getData(): ValueWithExpiry<TItem>[] {
-    return JSON.parse(localStorage.getItem(this._storageKey)) ?? [];
+    return JSON.parse(localStorage.getItem(this.storageKey)) ?? [];
   }
 
   getItemValue(key: string): TItem {
@@ -76,8 +86,8 @@ export abstract class CacheService<TItem> {
     }
   }
 
-  private cleanExpiredData(): void {
+  private cleanExpiredData(storageKey: string): void {
     const validDate = this.getData().filter((value) => this.isDateValid(value.expiration));
-    localStorage.setItem(this._storageKey, JSON.stringify(validDate));
+    localStorage.setItem(storageKey, JSON.stringify(validDate));
   }
 }

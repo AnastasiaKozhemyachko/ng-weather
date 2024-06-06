@@ -4,8 +4,8 @@ import {Observable, of} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {CurrentConditions} from './current-conditions/current-conditions.type';
 import {Forecast} from './forecasts-list/forecast.type';
-import {ForecastCacheService} from './servises/forecast-cache.service';
-import {LocationCacheService} from './servises/location-cache.service';
+import {ForecastCacheService} from './services/forecast-cache.service';
+import {LocationCacheService} from './services/location-cache.service';
 import {catchError} from 'rxjs/operators';
 
 @Injectable()
@@ -21,7 +21,7 @@ export class WeatherService {
     // Here we make a request to get the current conditions data from the API. Note the use of backticks and an expression to insert the zipcode
     const request = this.http.get<CurrentConditions>(`${WeatherService.URL}/weather?zip=${zipcode},us&units=imperial&APPID=${WeatherService.APPID}`)
       .pipe(catchError(() => of(null)));
-    return this.locationService.getDataOrFetch(request, zipcode);
+    return this.locationService.getMapDataOrFetch(request, zipcode);
   }
 
   getForecast(zipcode: string): Observable<Forecast> {

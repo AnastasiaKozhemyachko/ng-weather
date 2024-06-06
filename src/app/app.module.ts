@@ -16,8 +16,8 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import {TabComponent} from './tab/tab.component';
 import {TabsComponent} from './tabs/tabs.component';
-import {LocationCacheService} from './servises/location-cache.service';
-import {ForecastCacheService} from './servises/forecast-cache.service';
+import {LocationCacheService} from './services/location-cache.service';
+import {ForecastCacheService} from './services/forecast-cache.service';
 
 // @ts-ignore
 @NgModule({
