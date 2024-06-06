@@ -200,8 +200,6 @@ let CurrentConditionsComponent = class CurrentConditionsComponent {
         } : null;
       }).filter(item => item !== null);
     });
-    this.setupFormControl(this.locationFormControl, this.locationCacheService);
-    this.setupFormControl(this.forecastFormControl, this.forecastCacheService);
     this.setInitialLocatonFromCache();
     // Effect to load current conditions when a new location is added
     (0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.effect)(() => {
@@ -212,6 +210,10 @@ let CurrentConditionsComponent = class CurrentConditionsComponent {
     }, {
       allowSignalWrites: true
     });
+  }
+  ngOnInit() {
+    this.setupFormControl(this.locationFormControl, this.locationCacheService);
+    this.setupFormControl(this.forecastFormControl, this.forecastCacheService);
   }
   ngOnDestroy() {
     this.destroy$.next();

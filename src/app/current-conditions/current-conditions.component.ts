@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, computed, effect, inject, OnDestroy} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, effect, inject, OnDestroy, OnInit} from '@angular/core';
 import {WeatherService} from '../weather.service';
 import {LocationService} from '../location.service';
 import {debounceTime, distinctUntilChanged, takeUntil} from 'rxjs/operators';
@@ -14,7 +14,7 @@ import {CacheService} from '../services/cache.service';
   styleUrls: ['./current-conditions.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CurrentConditionsComponent implements OnDestroy {
+export class CurrentConditionsComponent implements OnDestroy, OnInit {
   weatherService = inject(WeatherService);
   protected locationService = inject(LocationService);
   protected locationCacheService = inject(LocationCacheService);
@@ -37,8 +37,6 @@ export class CurrentConditionsComponent implements OnDestroy {
   });
 
   constructor() {
-    this.setupFormControl(this.locationFormControl, this.locationCacheService);
-    this.setupFormControl(this.forecastFormControl, this.forecastCacheService);
     this.setInitialLocatonFromCache();
 
     // Effect to load current conditions when a new location is added
@@ -48,6 +46,11 @@ export class CurrentConditionsComponent implements OnDestroy {
         this.weatherService.addCurrentConditionsObservable(zipCode).subscribe(() => this.locationService.addLocation(zipCode));
       }
     }, {allowSignalWrites: true});
+  }
+
+  ngOnInit(): void {
+    this.setupFormControl(this.locationFormControl, this.locationCacheService);
+    this.setupFormControl(this.forecastFormControl, this.forecastCacheService);
   }
 
   ngOnDestroy(): void {
@@ -73,7 +76,7 @@ export class CurrentConditionsComponent implements OnDestroy {
   private setInitialLocatonFromCache() {
     const actualValueFromCache = this.locationCacheService.getData()
       .filter(value => value.value.isShow)
-      .map(value => <string>value.key)
+      .map(value => <string>value.key);
     this.locationService.locations.set(actualValueFromCache);
   }
 }

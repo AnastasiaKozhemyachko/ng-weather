@@ -69,7 +69,7 @@ export abstract class CacheService<TItem> {
   getDataOrFetch(request: Observable<TItem>, key: string): Observable<TItem> {
     const validData = this.getNonExpiredItem(key)
     if (validData) {
-      return of(validData)
+      return of(validData);
     }
     return request.pipe(tap((value) => this.addData(value, key)));
   }
