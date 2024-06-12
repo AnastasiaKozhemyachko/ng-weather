@@ -26,6 +26,7 @@ export abstract class CacheService<TItem> {
     localStorage.setItem(this.storageKey, JSON.stringify(transformLocalStorage));
   }
 
+  // Adds new data to localStorage or replaces existing data if the key already exists.
   addData(item: TItem, key: string | number): void {
     if (!item) {
       return;

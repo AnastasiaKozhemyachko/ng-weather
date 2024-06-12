@@ -7,13 +7,14 @@
 </div>
 
 <app-tabs (tabClose)="removeLocation($event.zip)">
-    <ng-container *ngFor="let location of conditions(); let i = index">
+    <ng-container *ngFor="let location of conditions()">
         <app-tab [titleTemplateRef]="titleTemplateRef"
                  [bodyTemplateRef]="bodyTemplate"
                  [content]="location"
         ></app-tab>
     </ng-container>
 </app-tabs>
+
 <ng-template #titleTemplateRef let-location>
     <ng-container *ngIf="location">{{location.data.name}} ({{location.zip}})</ng-container>
 </ng-template>
@@ -31,7 +32,7 @@
                 - Min {{location.data.main.temp_min | number:'.0-0'}}
             </p>
             <p>
-                <a [routerLink]="['/forecast', location.zip]" >Show 5-day forecast for {{location.data.name}}</a>
+                <a [routerLink]="['/forecast', location.zip]">Show 5-day forecast for {{location.data.name}}</a>
             </p>
         </div>
         <div>
